@@ -1,0 +1,198 @@
+import { useEffect, useState } from 'react';
+import { FileCheck, MapPin, Building2, Calendar, CreditCard, Package } from 'lucide-react';
+
+interface CertificateData {
+  certificate_number: string;
+  loading_number: string;
+  origin_country: string;
+  province: string;
+  exporter_name: string;
+  exporter_address: string;
+  importer_name: string;
+  importer_address: string;
+  export_license: string;
+  shipment_date: string;
+  expiration_date: string;
+}
+
+interface CertificateViewerProps {
+  data?: CertificateData;
+}
+
+export function CertificateViewer({ data: externalData }: CertificateViewerProps) {
+  const [certificate, setCertificate] = useState<CertificateData | null>(externalData || null);
+  const [loading, setLoading] = useState(!externalData);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (externalData) {
+      setCertificate(externalData);
+      setLoading(false);
+      return;
+    }
+
+    const decodeCertificateData = () => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const qrDataParam = params.get('data');
+
+        if (qrDataParam) {
+          const decodedData = JSON.parse(decodeURIComponent(qrDataParam)) as CertificateData;
+          setCertificate(decodedData);
+        } else {
+          setError('No certificate data provided');
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Invalid certificate data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    decodeCertificateData();
+  }, [externalData]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-4">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading certificate...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !certificate) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full text-center">
+          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <FileCheck className="w-8 h-8 text-red-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Certificate Not Found</h2>
+          <p className="text-gray-600">{error || 'The certificate you are looking for does not exist.'}</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4">
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
+          <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-6">
+            <div className="flex items-center justify-center mb-4">
+              <FileCheck className="w-12 h-12 text-white" />
+            </div>
+            <h1 className="text-3xl font-bold text-white text-center mb-2">
+              CERTIFICAT DE LA CONFÉRENCE INTERNATIONALE
+            </h1>
+            <p className="text-blue-100 text-center text-lg">
+              SUR LA REGION DES GRANDS LACS
+            </p>
+          </div>
+
+          <div className="p-8 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-gray-50 rounded-lg p-4">
+                <div className="flex items-start space-x-3">
+                  <Package className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">Chargement N°</p>
+                    <p className="text-lg font-semibold text-gray-900">{certificate.loading_number}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gray-50 rounded-lg p-4">
+                <div className="flex items-start space-x-3">
+                  <CreditCard className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">Numéro du Certificat CIRGL</p>
+                    <p className="text-lg font-semibold text-gray-900">{certificate.certificate_number}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t border-gray-200 pt-6">
+              <div className="flex items-start space-x-3 mb-4">
+                <MapPin className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Origine</p>
+                  <p className="text-lg font-semibold text-gray-900">{certificate.origin_country}</p>
+                  <p className="text-md text-gray-700">Province: {certificate.province}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t border-gray-200 pt-6">
+              <div className="flex items-start space-x-3 mb-4">
+                <Building2 className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-500 mb-2">Exportateur</p>
+                  <p className="text-lg font-semibold text-gray-900">{certificate.exporter_name}</p>
+                  <p className="text-md text-gray-700">{certificate.exporter_address}</p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-3 mt-4">
+                <Building2 className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-500 mb-2">Importateur</p>
+                  <p className="text-lg font-semibold text-gray-900">{certificate.importer_name}</p>
+                  <p className="text-md text-gray-700">{certificate.importer_address}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t border-gray-200 pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-blue-50 rounded-lg p-4">
+                  <div className="flex items-start space-x-2">
+                    <CreditCard className="w-4 h-4 text-blue-600 mt-1 flex-shrink-0" />
+                    <div>
+                      <p className="text-xs font-medium text-gray-600">N° de Licence d'Exportation</p>
+                      <p className="text-sm font-semibold text-gray-900 mt-1">{certificate.export_license}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-green-50 rounded-lg p-4">
+                  <div className="flex items-start space-x-2">
+                    <Calendar className="w-4 h-4 text-green-600 mt-1 flex-shrink-0" />
+                    <div>
+                      <p className="text-xs font-medium text-gray-600">Date d'Expédition</p>
+                      <p className="text-sm font-semibold text-gray-900 mt-1">
+                        {new Date(certificate.shipment_date).toLocaleDateString('fr-FR')}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-orange-50 rounded-lg p-4">
+                  <div className="flex items-start space-x-2">
+                    <Calendar className="w-4 h-4 text-orange-600 mt-1 flex-shrink-0" />
+                    <div>
+                      <p className="text-xs font-medium text-gray-600">Date d'Expiration</p>
+                      <p className="text-sm font-semibold text-gray-900 mt-1">
+                        {new Date(certificate.expiration_date).toLocaleDateString('fr-FR')}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gray-50 px-8 py-4 border-t border-gray-200">
+            <p className="text-xs text-gray-500 text-center">
+              Ce certificat a été généré électroniquement et est valide sans signature
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
