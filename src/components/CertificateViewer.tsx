@@ -78,12 +78,42 @@ export function CertificateViewer({ data: externalData }: CertificateViewerProps
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between">
+            <a href="/" className="flex items-center space-x-3">
+              <img 
+                src="/logo.png" 
+                alt="CIRGL Logo" 
+                className="w-12 h-12 object-contain"
+              />
+              <div>
+                <h1 className="text-lg font-bold text-blue-900">CIRGL</h1>
+                <p className="text-xs text-gray-500">Certificate Verification</p>
+              </div>
+            </a>
+            <a
+              href="/"
+              className="text-blue-600 hover:text-blue-700 font-medium"
+            >
+              ← Back to Home
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <div className="py-12 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-6">
             <div className="flex items-center justify-center mb-4">
-              <FileCheck className="w-12 h-12 text-white" />
+              <img 
+                src="/logo.png" 
+                alt="CIRGL Logo" 
+                className="w-20 h-20 object-contain bg-white rounded-full p-2"
+              />
             </div>
             <h1 className="text-3xl font-bold text-white text-center mb-2">
               CERTIFICAT DE LA CONFÉRENCE INTERNATIONALE
@@ -192,6 +222,7 @@ export function CertificateViewer({ data: externalData }: CertificateViewerProps
             </p>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

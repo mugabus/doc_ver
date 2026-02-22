@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FileCheck, Lock, User, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { Lock, User, AlertCircle, Eye, EyeOff } from 'lucide-react';
 
 interface LoginProps {
   onLogin: () => void;
@@ -43,11 +43,15 @@ export function Login({ onLogin }: LoginProps) {
       <div className="relative w-full max-w-md">
         {/* Logo & Title */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl shadow-2xl mb-6">
-            <FileCheck className="w-10 h-10 text-blue-600" />
+          <div className="inline-flex items-center justify-center w-24 h-24 bg-white rounded-2xl shadow-2xl mb-6 p-2">
+            <img 
+              src="/logo.png" 
+              alt="CIRGL Logo" 
+              className="w-full h-full object-contain"
+            />
           </div>
           <h1 className="text-3xl font-bold text-white mb-2">CIRGL Admin</h1>
-          <p className="text-blue-200">Conference Internationale sur la Région des Grands Lacs</p>
+          <p className="text-blue-200">Conférence Internationale sur la Région des Grands Lacs</p>
           <p className="text-blue-300 text-sm mt-1">Certificate Management System</p>
         </div>
 

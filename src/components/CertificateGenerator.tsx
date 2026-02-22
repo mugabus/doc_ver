@@ -103,8 +103,33 @@ export function CertificateGenerator() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between">
+            <a href="/" className="flex items-center space-x-3">
+              <img 
+                src="/logo.png" 
+                alt="CIRGL Logo" 
+                className="w-12 h-12 object-contain"
+              />
+              <div>
+                <h1 className="text-lg font-bold text-blue-900">CIRGL</h1>
+                <p className="text-xs text-gray-500">Certificate Generator</p>
+              </div>
+            </a>
+            <a
+              href="/"
+              className="text-blue-600 hover:text-blue-700 font-medium"
+            >
+              ← Back to Home
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <div className="max-w-6xl mx-auto py-12 px-4">
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-4">
             <QrCode className="w-16 h-16 text-blue-600" />

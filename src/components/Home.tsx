@@ -110,9 +110,11 @@ export function Home() {
           <div className="flex items-center justify-between py-4">
             {/* Logo */}
             <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center shadow-lg">
-                <FileCheck className="w-8 h-8 text-white" />
-              </div>
+              <img 
+                src="/logo.png" 
+                alt="CIRGL Logo" 
+                className="w-16 h-16 object-contain"
+              />
               <div>
                 <h1 className="text-xl font-bold text-blue-900">CIRGL / ICGLR</h1>
                 <p className="text-xs text-gray-500">Système de Certification</p>
@@ -456,9 +458,11 @@ export function Home() {
             {/* Logo & Description */}
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-                  <FileCheck className="w-6 h-6 text-white" />
-                </div>
+                <img 
+                  src="/logo.png" 
+                  alt="CIRGL Logo" 
+                  className="w-12 h-12 object-contain"
+                />
                 <div>
                   <h3 className="text-white font-bold text-lg">CIRGL</h3>
                   <p className="text-gray-500 text-xs">Système de Certification</p>
