@@ -109,17 +109,13 @@ export function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between py-4">
             {/* Logo */}
-            <div className="flex items-center space-x-4">
+            <a href="/" className="flex items-center">
               <img 
                 src="/logo.png" 
                 alt="CIRGL Logo" 
-                className="w-16 h-16 object-contain"
+                className="h-14 object-contain"
               />
-              <div>
-                <h1 className="text-xl font-bold text-blue-900">CIRGL / ICGLR</h1>
-                <p className="text-xs text-gray-500">Système de Certification</p>
-              </div>
-            </div>
+            </a>
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center space-x-8">
