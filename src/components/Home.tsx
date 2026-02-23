@@ -25,7 +25,8 @@ export function Home() {
   const handleVerify = (e: React.FormEvent) => {
     e.preventDefault();
     if (verifyCode.trim()) {
-      window.location.href = `/?data=${encodeURIComponent(verifyCode)}`;
+      // Redirect to viewer with code parameter for database lookup
+      window.location.href = `/?code=${encodeURIComponent(verifyCode.trim().toUpperCase())}`;
     }
   };
 

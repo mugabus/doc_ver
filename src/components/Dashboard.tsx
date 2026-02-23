@@ -14,92 +14,59 @@ import {
   Trash2,
   Filter,
   LogOut,
-  User
+  User,
+  Loader2
 } from 'lucide-react';
-
-interface Certificate {
-  id: string;
-  certificate_number: string;
-  loading_number: string;
-  origin_country: string;
-  province: string;
-  exporter_name: string;
-  exporter_address: string;
-  importer_name: string;
-  importer_address: string;
-  export_license: string;
-  shipment_date: string;
-  expiration_date: string;
-  created_at: string;
-}
-
-// Sample data for demonstration
-const sampleCertificates: Certificate[] = [
-  {
-    id: '1',
-    certificate_number: 'COD175870',
-    loading_number: 'MSI 079109135400 2117 26',
-    origin_country: 'RÉPUBLIQUE DÉMOCRATIQUE DU CONGO',
-    province: 'ITURI',
-    exporter_name: 'ROYAL IMPORT EXPORT SARL',
-    exporter_address: '1148 AV.PROVINCE C/GOMBE KINSHASA',
-    importer_name: 'BWAMBALE SINDANI/GOLDMANIA JEWELLERY LLC',
-    importer_address: 'DUBAI U.A.E',
-    export_license: 'CN-5007099',
-    shipment_date: '2026-02-13',
-    expiration_date: '2026-02-25',
-    created_at: '2026-02-13T10:30:00Z',
-  },
-  {
-    id: '2',
-    certificate_number: 'COD175871',
-    loading_number: 'MSI 079109135400 2117 27',
-    origin_country: 'RÉPUBLIQUE DÉMOCRATIQUE DU CONGO',
-    province: 'NORD-KIVU',
-    exporter_name: 'MINERALS CONGO SARL',
-    exporter_address: '85 AV. LUMUMBA GOMA',
-    importer_name: 'DUBAI MINERALS TRADING',
-    importer_address: 'DUBAI U.A.E',
-    export_license: 'CN-5007100',
-    shipment_date: '2026-02-14',
-    expiration_date: '2026-02-28',
-    created_at: '2026-02-14T09:15:00Z',
-  },
-  {
-    id: '3',
-    certificate_number: 'COD175872',
-    loading_number: 'MSI 079109135400 2117 28',
-    origin_country: 'RÉPUBLIQUE DÉMOCRATIQUE DU CONGO',
-    province: 'SUD-KIVU',
-    exporter_name: 'GOLDEN RESOURCES SPRL',
-    exporter_address: '42 AV. INDEPENDANCE BUKAVU',
-    importer_name: 'PRECIOUS METALS LTD',
-    importer_address: 'ANTWERP, BELGIUM',
-    export_license: 'CN-5007101',
-    shipment_date: '2026-02-15',
-    expiration_date: '2026-03-01',
-    created_at: '2026-02-15T14:45:00Z',
-  },
-];
+import { getAllCertificates, getCertificateStats, deleteCertificate } from '../lib/database';
+import { Certificate } from '../lib/supabase';
 
 interface DashboardProps {
   onLogout: () => void;
 }
 
 export function Dashboard({ onLogout }: DashboardProps) {
+  const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCertificate, setSelectedCertificate] = useState<Certificate | null>(null);
   const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'expired'>('all');
   const [userEmail, setUserEmail] = useState<string>('');
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState([
+    { label: 'Total Certificates', value: '0', icon: FileCheck, color: 'blue' },
+    { label: 'Active', value: '0', icon: QrCode, color: 'green' },
+    { label: 'Expired', value: '0', icon: BarChart3, color: 'red' },
+    { label: 'Exporters', value: '0', icon: Users, color: 'purple' },
+  ]);
 
+  // Fetch data from Supabase
   useEffect(() => {
-    const email = localStorage.getItem('userEmail');
-    if (email) {
-      setUserEmail(email);
-    }
+    const fetchData = async () => {
+      setLoading(true);
+      const email = localStorage.getItem('userEmail');
+      if (email) {
+        setUserEmail(email);
+      }
+
+      // Fetch certificates
+      const certs = await getAllCertificates();
+      setCertificates(certs);
+
+      // Fetch stats
+      const statsData = await getCertificateStats();
+      setStats([
+        { label: 'Total Certificates', value: statsData.total.toString(), icon: FileCheck, color: 'blue' },
+        { label: 'Active', value: statsData.active.toString(), icon: QrCode, color: 'green' },
+        { label: 'Expired', value: statsData.expired.toString(), icon: BarChart3, color: 'red' },
+        { label: 'Exporters', value: statsData.exporters.toString(), icon: Users, color: 'purple' },
+      ]);
+
+      setLoading(false);
+    };
+
+    fetchData();
   }, []);
 
-  const filteredCertificates = sampleCertificates.filter(cert => {
+  const filteredCertificates = certificates.filter(cert => {
     const matchesSearch = 
       cert.certificate_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
       cert.exporter_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -115,19 +82,22 @@ export function Dashboard({ onLogout }: DashboardProps) {
     return matchesSearch;
   });
 
-  const stats = [
-    { label: 'Total Certificates', value: '10,847', icon: FileCheck, color: 'blue' },
-    { label: 'Active', value: '9,234', icon: QrCode, color: 'green' },
-    { label: 'Pending Review', value: '156', icon: BarChart3, color: 'yellow' },
-    { label: 'Exporters', value: '523', icon: Users, color: 'purple' },
-  ];
-
   const handleViewCertificate = (cert: Certificate) => {
     setSelectedCertificate(cert);
   };
 
   const handleBackToList = () => {
     setSelectedCertificate(null);
+  };
+
+  const handleDeleteCertificate = async (id: string) => {
+    if (confirm('Are you sure you want to delete this certificate?')) {
+      const success = await deleteCertificate(id);
+      if (success) {
+        setCertificates(certificates.filter(c => c.id !== id));
+        setSelectedCertificate(null);
+      }
+    }
   };
 
   if (selectedCertificate) {
@@ -151,7 +121,9 @@ export function Dashboard({ onLogout }: DashboardProps) {
               </div>
               <div className="flex items-center space-x-3">
                 <a
-                  href={`/?data=${encodeURIComponent(JSON.stringify(selectedCertificate))}`}
+                  href={`/?code=${selectedCertificate.certificate_number}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition"
                 >
                   <Eye className="w-4 h-4 mr-2" />
@@ -235,7 +207,10 @@ export function Dashboard({ onLogout }: DashboardProps) {
                   Created: {new Date(selectedCertificate.created_at).toLocaleString()}
                 </p>
                 <div className="flex space-x-3">
-                  <button className="inline-flex items-center px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg font-medium transition">
+                  <button 
+                    onClick={() => handleDeleteCertificate(selectedCertificate.id)}
+                    className="inline-flex items-center px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg font-medium transition"
+                  >
                     <Trash2 className="w-4 h-4 mr-2" />
                     Delete
                   </button>
@@ -345,125 +320,116 @@ export function Dashboard({ onLogout }: DashboardProps) {
             </div>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Certificate #
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Exporter
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Origin
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Shipment Date
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {filteredCertificates.map((cert) => {
-                  const isExpired = new Date(cert.expiration_date) <= new Date();
-                  return (
-                    <tr key={cert.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="font-semibold text-blue-600">{cert.certificate_number}</span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div>
-                          <p className="font-medium text-gray-900">{cert.exporter_name}</p>
-                          <p className="text-sm text-gray-500">{cert.exporter_address}</p>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <Globe className="w-4 h-4 text-gray-400 mr-2" />
-                          <span className="text-gray-900">{cert.province}</span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <Calendar className="w-4 h-4 text-gray-400 mr-2" />
-                          <span className="text-gray-900">
-                            {new Date(cert.shipment_date).toLocaleDateString('fr-FR')}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-medium ${
-                            isExpired
-                              ? 'bg-red-100 text-red-700'
-                              : 'bg-green-100 text-green-700'
-                          }`}
-                        >
-                          {isExpired ? 'Expired' : 'Active'}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center space-x-2">
-                          <button
-                            onClick={() => handleViewCertificate(cert)}
-                            className="p-2 hover:bg-gray-100 rounded-lg transition"
-                            title="View Details"
-                          >
-                            <Eye className="w-4 h-4 text-gray-600" />
-                          </button>
-                          <button
-                            className="p-2 hover:bg-gray-100 rounded-lg transition"
-                            title="Download QR"
-                          >
-                            <Download className="w-4 h-4 text-gray-600" />
-                          </button>
-                        </div>
-                      </td>
+          {loading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+            </div>
+          ) : (
+            <>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Certificate #
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Exporter
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Origin
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Shipment Date
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Status
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                      </th>
                     </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-
-          {filteredCertificates.length === 0 && (
-            <div className="text-center py-12">
-              <FileCheck className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">No certificates found</p>
-            </div>
-          )}
-
-          {/* Pagination */}
-          <div className="px-6 py-4 border-t border-gray-200">
-            <div className="flex items-center justify-between">
-              <p className="text-sm text-gray-500">
-                Showing {filteredCertificates.length} of {sampleCertificates.length} certificates
-              </p>
-              <div className="flex items-center space-x-2">
-                <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50">
-                  Previous
-                </button>
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                  1
-                </button>
-                <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                  2
-                </button>
-                <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                  3
-                </button>
-                <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                  Next
-                </button>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {filteredCertificates.map((cert) => {
+                      const isExpired = new Date(cert.expiration_date) <= new Date();
+                      return (
+                        <tr key={cert.id} className="hover:bg-gray-50">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className="font-semibold text-blue-600">{cert.certificate_number}</span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div>
+                              <p className="font-medium text-gray-900">{cert.exporter_name}</p>
+                              <p className="text-sm text-gray-500">{cert.exporter_address}</p>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <Globe className="w-4 h-4 text-gray-400 mr-2" />
+                              <span className="text-gray-900">{cert.province}</span>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <Calendar className="w-4 h-4 text-gray-400 mr-2" />
+                              <span className="text-gray-900">
+                                {new Date(cert.shipment_date).toLocaleDateString('fr-FR')}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span
+                              className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                isExpired
+                                  ? 'bg-red-100 text-red-700'
+                                  : 'bg-green-100 text-green-700'
+                              }`}
+                            >
+                              {isExpired ? 'Expired' : 'Active'}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center space-x-2">
+                              <button
+                                onClick={() => handleViewCertificate(cert)}
+                                className="p-2 hover:bg-gray-100 rounded-lg transition"
+                                title="View Details"
+                              >
+                                <Eye className="w-4 h-4 text-gray-600" />
+                              </button>
+                              <button
+                                className="p-2 hover:bg-gray-100 rounded-lg transition"
+                                title="Download QR"
+                              >
+                                <Download className="w-4 h-4 text-gray-600" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
-            </div>
-          </div>
+
+              {filteredCertificates.length === 0 && (
+                <div className="text-center py-12">
+                  <FileCheck className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                  <p className="text-gray-500">No certificates found</p>
+                </div>
+              )}
+
+              {/* Pagination */}
+              <div className="px-6 py-4 border-t border-gray-200">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-gray-500">
+                    Showing {filteredCertificates.length} of {certificates.length} certificates
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </main>
     </div>

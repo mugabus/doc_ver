@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import QRCode from 'qrcode';
 import { QrCode, Download, FileCheck, Loader2, Eye } from 'lucide-react';
+import { saveCertificate, generateCertificateNumber } from '../lib/database';
 
 interface CertificateData {
   certificate_number: string;
@@ -35,6 +36,7 @@ export function CertificateGenerator() {
   const [previewData, setPreviewData] = useState<CertificateData | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [savedToDb, setSavedToDb] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -47,11 +49,23 @@ export function CertificateGenerator() {
     e.preventDefault();
     setLoading(true);
     setSuccess(false);
+    setSavedToDb(false);
 
     try {
-      const qrData = JSON.stringify(formData);
-      const encodedData = encodeURIComponent(qrData);
-      const certificateUrl = `${window.location.origin}/?data=${encodedData}`;
+      // Generate certificate number if not provided
+      const certificateNumber = formData.certificate_number || generateCertificateNumber();
+      const dataToSave = { ...formData, certificate_number: certificateNumber };
+
+      // Save to Supabase database
+      const saved = await saveCertificate(dataToSave);
+      
+      if (saved) {
+        setSavedToDb(true);
+        setFormData(prev => ({ ...prev, certificate_number: certificateNumber }));
+      }
+
+      // Generate QR code with certificate number for verification
+      const certificateUrl = `${window.location.origin}/?code=${certificateNumber}`;
 
       const qrCode = await QRCode.toDataURL(certificateUrl, {
         width: 400,
@@ -63,11 +77,11 @@ export function CertificateGenerator() {
       });
 
       setQrCodeUrl(qrCode);
-      setPreviewData(formData);
+      setPreviewData({ ...dataToSave });
       setSuccess(true);
     } catch (error) {
-      console.error('Error creating QR code:', error);
-      alert('Error creating QR code. Please try again.');
+      console.error('Error creating certificate:', error);
+      alert('Error creating certificate. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -88,7 +102,7 @@ export function CertificateGenerator() {
 
   const loadSampleData = () => {
     setFormData({
-      certificate_number: 'COD175870',
+      certificate_number: '',
       loading_number: 'MSI 079109135400 2117 26',
       origin_country: 'RÉPUBLIQUE DÉMOCRATIQUE DU CONGO',
       province: 'ITURI',
@@ -97,8 +111,8 @@ export function CertificateGenerator() {
       importer_name: 'BWAMBALE SINDANI/GOLDMANIA JEWELLERY LLC',
       importer_address: 'DUBAI U.A.E',
       export_license: 'CN-5007099',
-      shipment_date: '2026-02-13',
-      expiration_date: '2026-02-25',
+      shipment_date: new Date().toISOString().split('T')[0],
+      expiration_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
     });
   };
 
@@ -150,22 +164,21 @@ export function CertificateGenerator() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Certificate Number (CIRGL)
+                  Certificate Number (CIRGL) - Leave empty to auto-generate
                 </label>
                 <input
                   type="text"
                   name="certificate_number"
                   value={formData.certificate_number}
                   onChange={handleChange}
-                  required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="COD175870"
+                  placeholder="Auto-generated if empty"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Loading Number
+                  Loading Number *
                 </label>
                 <input
                   type="text"
@@ -181,7 +194,7 @@ export function CertificateGenerator() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Origin Country
+                    Origin Country *
                   </label>
                   <input
                     type="text"
@@ -196,7 +209,7 @@ export function CertificateGenerator() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Province
+                    Province *
                   </label>
                   <input
                     type="text"
@@ -212,7 +225,7 @@ export function CertificateGenerator() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Exporter Name
+                  Exporter Name *
                 </label>
                 <input
                   type="text"
@@ -227,7 +240,7 @@ export function CertificateGenerator() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Exporter Address
+                  Exporter Address *
                 </label>
                 <textarea
                   name="exporter_address"
@@ -242,7 +255,7 @@ export function CertificateGenerator() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Importer Name
+                  Importer Name *
                 </label>
                 <input
                   type="text"
@@ -257,7 +270,7 @@ export function CertificateGenerator() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Importer Address
+                  Importer Address *
                 </label>
                 <textarea
                   name="importer_address"
@@ -272,7 +285,7 @@ export function CertificateGenerator() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Export License Number
+                  Export License Number *
                 </label>
                 <input
                   type="text"
@@ -288,7 +301,7 @@ export function CertificateGenerator() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Shipment Date
+                    Shipment Date *
                   </label>
                   <input
                     type="date"
@@ -302,7 +315,7 @@ export function CertificateGenerator() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Expiration Date
+                    Expiration Date *
                   </label>
                   <input
                     type="date"
@@ -355,7 +368,12 @@ export function CertificateGenerator() {
                   <FileCheck className="w-5 h-5 text-green-600 mt-0.5 mr-3 flex-shrink-0" />
                   <div>
                     <p className="text-green-800 font-medium">QR Code Generated Successfully!</p>
-                    <p className="text-green-700 text-sm mt-1">Scan this code to view the certificate</p>
+                    <p className="text-green-700 text-sm mt-1">
+                      Certificate Number: <strong>{formData.certificate_number}</strong>
+                    </p>
+                    {savedToDb && (
+                      <p className="text-green-700 text-sm mt-1">✓ Saved to database</p>
+                    )}
                   </div>
                 </div>
 
@@ -369,7 +387,7 @@ export function CertificateGenerator() {
                   </button>
 
                   <a
-                    href={`/?data=${encodeURIComponent(JSON.stringify(previewData))}`}
+                    href={`/?code=${formData.certificate_number}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block w-full bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-3 px-6 rounded-lg transition duration-200 text-center"

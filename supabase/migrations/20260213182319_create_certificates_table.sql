@@ -46,7 +46,10 @@ CREATE POLICY "Anyone can view certificates"
   TO anon, authenticated
   USING (true);
 
-CREATE POLICY "Authenticated users can create certificates"
+CREATE POLICY "Anyone can create certificates"
   ON certificates FOR INSERT
-  TO authenticated
+  TO anon, authenticated
   WITH CHECK (true);
+
+-- Create index for faster lookups by certificate number
+CREATE INDEX IF NOT EXISTS certificates_certificate_number_idx ON certificates(certificate_number);

@@ -16,9 +16,13 @@ function App() {
 
     const params = new URLSearchParams(window.location.search);
     const hasData = params.has('data');
+    const hasCode = params.has('code');
     const action = params.get('action');
 
-    if (hasData) {
+    if (hasCode) {
+      // Certificate verification via code (from QR scan)
+      setView('viewer');
+    } else if (hasData) {
       const data = params.get('data');
       if (data) {
         try {
