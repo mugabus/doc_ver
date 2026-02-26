@@ -235,7 +235,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
           <div className="flex items-center justify-between">
             <a href="/" className="flex items-center">
               <img 
-                src="/logo.png" 
+                src="/logo-cr.png" 
                 alt="CIRGL Logo" 
                 className="h-12 object-contain"
               />

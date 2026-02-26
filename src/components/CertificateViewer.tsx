@@ -86,7 +86,7 @@ export function CertificateViewer() {
           <div className="flex items-center justify-between">
             <a href="/" className="flex items-center">
               <img 
-                src="/logo.png" 
+                src="/logo-cr.png" 
                 alt="CIRGL Logo" 
                 className="h-12 object-contain"
               />
@@ -107,7 +107,7 @@ export function CertificateViewer() {
             <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-6">
               <div className="flex items-center justify-center mb-4">
                 <img 
-                  src="/logo.png" 
+                  src="/logo-cr.png" 
                   alt="CIRGL Logo" 
                   className="w-20 h-20 object-contain bg-white rounded-full p-2"
                 />

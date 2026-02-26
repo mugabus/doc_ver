@@ -71,7 +71,7 @@ export function CertificateGenerator() {
         width: 400,
         margin: 2,
         color: {
-          dark: '#1e40af',
+          dark: '#000000',
           light: '#ffffff',
         },
       });
@@ -122,19 +122,27 @@ export function CertificateGenerator() {
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <a href="/" className="flex items-center">
+            <a href="/?action=dashboard" className="flex items-center">
               <img 
-                src="/logo.png" 
+                src="/logo-cr.png" 
                 alt="CIRGL Logo" 
                 className="h-12 object-contain"
               />
             </a>
-            <a
-              href="/"
-              className="text-blue-600 hover:text-blue-700 font-medium"
-            >
-              ← Back to Home
-            </a>
+            <div className="flex items-center space-x-4">
+              <a
+                href="/?action=dashboard"
+                className="text-blue-600 hover:text-blue-700 font-medium"
+              >
+                ← Back to Dashboard
+              </a>
+              <a
+                href="/"
+                className="text-gray-500 hover:text-gray-700 font-medium"
+              >
+                Home
+              </a>
+            </div>
           </div>
         </div>
       </header>

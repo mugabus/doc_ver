@@ -45,8 +45,8 @@ export function Login({ onLogin }: LoginProps) {
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-24 h-24 bg-white rounded-2xl shadow-2xl mb-6 p-2">
             <img 
-              src="/logo.png" 
-              alt="CIRGL Logo" 
+              src="/logo-cr.png"
+              alt="CIRGL Logo"
               className="w-full h-full object-contain"
             />
           </div>

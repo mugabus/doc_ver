@@ -112,7 +112,7 @@ export function Home() {
             {/* Logo */}
             <a href="/" className="flex items-center">
               <img 
-                src="/logo.png" 
+                src="/logo-cr.png"
                 alt="CIRGL Logo" 
                 className="h-14 object-contain"
               />
@@ -126,12 +126,6 @@ export function Home() {
               <a href="#" className="text-gray-600 hover:text-blue-900 transition">Actualités</a>
               <a href="#" className="text-gray-600 hover:text-blue-900 transition">Contact</a>
               <div className="flex items-center space-x-3 pl-4 border-l border-gray-200">
-                <a
-                  href="/?action=generate"
-                  className="px-4 py-2 bg-white border border-blue-600 text-blue-600 hover:bg-blue-50 rounded font-medium transition"
-                >
-                  Générer Certificat
-                </a>
                 <a
                   href="/?action=dashboard"
                   className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition"
@@ -160,9 +154,6 @@ export function Home() {
                 <a href="#" className="text-gray-600 py-2">Actualités</a>
                 <a href="#" className="text-gray-600 py-2">Contact</a>
                 <div className="flex flex-col space-y-2 pt-4 border-t border-gray-200">
-                  <a href="/?action=generate" className="text-center py-2 border border-blue-600 text-blue-600 rounded">
-                    Générer Certificat
-                  </a>
                   <a href="/?action=dashboard" className="text-center py-2 bg-blue-600 text-white rounded">
                     Espace Admin
                   </a>
@@ -194,18 +185,18 @@ export function Home() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <a
-                  href="/?action=generate"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-blue-900 font-bold rounded-lg transition shadow-lg"
-                >
-                  Obtenir un Certificat
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </a>
-                <a
                   href="#verification"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition border border-white/30"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-blue-900 font-bold rounded-lg transition shadow-lg"
                 >
                   <Search className="w-5 h-5 mr-2" />
                   Vérifier un Certificat
+                </a>
+                <a
+                  href="/?action=dashboard"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition border border-white/30"
+                >
+                  Espace Admin
+                  <ArrowRight className="w-5 h-5 ml-2" />
                 </a>
               </div>
             </div>
@@ -429,20 +420,20 @@ export function Home() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Besoin d'un Certificat CIRGL?</h2>
           <p className="text-blue-200 mb-8 text-lg">
-            Obtenez votre certificat de conformité en quelques étapes simples.
+            Contactez nos services ou connectez-vous à l'espace administrateur pour gérer les certificats.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="/?action=generate"
+              href="#verification"
               className="px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-blue-900 font-bold rounded-lg transition shadow-lg"
             >
-              Commencer maintenant
+              Vérifier un Certificat
             </a>
             <a
-              href="#"
+              href="/?action=dashboard"
               className="px-8 py-4 bg-transparent border-2 border-white hover:bg-white/10 text-white font-semibold rounded-lg transition"
             >
-              En savoir plus
+              Espace Admin
             </a>
           </div>
         </div>
@@ -456,7 +447,7 @@ export function Home() {
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
                 <img 
-                  src="/logo.png" 
+                  src="/logo-cr.png" 
                   alt="CIRGL Logo" 
                   className="w-12 h-12 object-contain"
                 />

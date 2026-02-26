@@ -35,7 +35,12 @@ function App() {
         }
       }
     } else if (action === 'generate') {
-      setView('generator');
+      // Generator requires authentication - redirect to login if not authenticated
+      if (authStatus) {
+        setView('generator');
+      } else {
+        setView('login');
+      }
     } else if (action === 'dashboard') {
       if (authStatus) {
         setView('dashboard');
