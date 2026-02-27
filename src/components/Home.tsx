@@ -3,7 +3,6 @@ import {
   FileCheck, 
   Shield, 
   Globe, 
-  ArrowRight, 
   Search,
   ChevronRight,
   MapPin,
@@ -125,14 +124,6 @@ export function Home() {
               <a href="#" className="text-gray-600 hover:text-blue-900 transition">Services</a>
               <a href="#" className="text-gray-600 hover:text-blue-900 transition">Actualités</a>
               <a href="#" className="text-gray-600 hover:text-blue-900 transition">Contact</a>
-              <div className="flex items-center space-x-3 pl-4 border-l border-gray-200">
-                <a
-                  href="/?action=dashboard"
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition"
-                >
-                  Espace Admin
-                </a>
-              </div>
             </nav>
 
             {/* Mobile Menu Button */}
@@ -153,11 +144,6 @@ export function Home() {
                 <a href="#" className="text-gray-600 py-2">Services</a>
                 <a href="#" className="text-gray-600 py-2">Actualités</a>
                 <a href="#" className="text-gray-600 py-2">Contact</a>
-                <div className="flex flex-col space-y-2 pt-4 border-t border-gray-200">
-                  <a href="/?action=dashboard" className="text-center py-2 bg-blue-600 text-white rounded">
-                    Espace Admin
-                  </a>
-                </div>
               </div>
             </nav>
           )}
@@ -190,13 +176,6 @@ export function Home() {
                 >
                   <Search className="w-5 h-5 mr-2" />
                   Vérifier un Certificat
-                </a>
-                <a
-                  href="/?action=dashboard"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition border border-white/30"
-                >
-                  Espace Admin
-                  <ArrowRight className="w-5 h-5 ml-2" />
                 </a>
               </div>
             </div>
@@ -420,7 +399,7 @@ export function Home() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Besoin d'un Certificat CIRGL?</h2>
           <p className="text-blue-200 mb-8 text-lg">
-            Contactez nos services ou connectez-vous à l'espace administrateur pour gérer les certificats.
+            Contactez nos services pour obtenir assistance.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
@@ -428,12 +407,6 @@ export function Home() {
               className="px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-blue-900 font-bold rounded-lg transition shadow-lg"
             >
               Vérifier un Certificat
-            </a>
-            <a
-              href="/?action=dashboard"
-              className="px-8 py-4 bg-transparent border-2 border-white hover:bg-white/10 text-white font-semibold rounded-lg transition"
-            >
-              Espace Admin
             </a>
           </div>
         </div>
