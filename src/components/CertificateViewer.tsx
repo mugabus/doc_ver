@@ -238,11 +238,6 @@ export function CertificateViewer() {
               <p className="text-xs text-gray-500 text-center">
                 Ce certificat a été généré électroniquement et est valide sans signature
               </p>
-              {certificate.created_at && (
-                <p className="text-xs text-gray-400 text-center mt-1">
-                  Created: {new Date(certificate.created_at).toLocaleString()}
-                </p>
-              )}
             </div>
           </div>
         </div>

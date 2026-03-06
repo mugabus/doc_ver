@@ -465,7 +465,7 @@ export function Home() {
                 </li>
                 <li className="flex items-center">
                   <Phone className="w-5 h-5 text-blue-400 mr-2 flex-shrink-0" />
-                  <span>+243 XXX XXX XXX</span>
+                  
                 </li>
                 <li className="flex items-center">
                   <Mail className="w-5 h-5 text-blue-400 mr-2 flex-shrink-0" />
