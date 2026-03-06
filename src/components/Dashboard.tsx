@@ -202,10 +202,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
             </div>
 
             <div className="mt-8 pt-8 border-t border-gray-200">
-              <div className="flex items-center justify-between">
-                <p className="text-sm text-gray-500">
-                  Created: {new Date(selectedCertificate.created_at).toLocaleString()}
-                </p>
+              <div className="flex items-center justify-end">
                 <div className="flex space-x-3">
                   <button 
                     onClick={() => handleDeleteCertificate(selectedCertificate.id)}
