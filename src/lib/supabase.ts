@@ -22,5 +22,6 @@ export interface Certificate {
   export_license: string;
   shipment_date: string;
   expiration_date: string;
+  quantity: string;
   created_at: string;
 }

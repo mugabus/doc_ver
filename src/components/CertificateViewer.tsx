@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FileCheck, MapPin, Building2, Calendar, CreditCard, Package, AlertCircle } from 'lucide-react';
+import { FileCheck, MapPin, Building2, Calendar, CreditCard, Package, AlertCircle, Scale } from 'lucide-react';
 import { getCertificateByNumber } from '../lib/database';
 import { Certificate } from '../lib/supabase';
 
@@ -196,7 +196,17 @@ export function CertificateViewer() {
               </div>
 
               <div className="border-t border-gray-200 pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div className="bg-purple-50 rounded-lg p-4">
+                    <div className="flex items-start space-x-2">
+                      <Scale className="w-4 h-4 text-purple-600 mt-1 flex-shrink-0" />
+                      <div>
+                        <p className="text-xs font-medium text-gray-600">Quantité (kg)</p>
+                        <p className="text-sm font-semibold text-gray-900 mt-1">{certificate.quantity} kg</p>
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="bg-blue-50 rounded-lg p-4">
                     <div className="flex items-start space-x-2">
                       <CreditCard className="w-4 h-4 text-blue-600 mt-1 flex-shrink-0" />

@@ -38,6 +38,7 @@ interface EditFormData {
   export_license: string;
   shipment_date: string;
   expiration_date: string;
+  quantity: string;
 }
 
 export function Dashboard({ onLogout }: DashboardProps) {
@@ -132,6 +133,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
       export_license: cert.export_license,
       shipment_date: cert.shipment_date,
       expiration_date: cert.expiration_date,
+      quantity: cert.quantity,
     });
     setIsEditing(true);
   };
@@ -230,6 +232,19 @@ export function Dashboard({ onLogout }: DashboardProps) {
                         value={editFormData.export_license}
                         onChange={handleEditFormChange}
                         required
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Quantity (kg) *</label>
+                      <input
+                        type="number"
+                        name="quantity"
+                        value={editFormData.quantity}
+                        onChange={handleEditFormChange}
+                        required
+                        step="0.01"
+                        min="0"
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -412,23 +427,27 @@ export function Dashboard({ onLogout }: DashboardProps) {
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="bg-white rounded-xl shadow-lg p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Certificate Information</h3>
-                <div className="space-y-4">
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <p className="text-sm text-gray-500">Certificate Number</p>
-                    <p className="text-lg font-semibold text-gray-900">{selectedCertificate.certificate_number}</p>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <p className="text-sm text-gray-500">Loading Number</p>
-                    <p className="text-lg font-semibold text-gray-900">{selectedCertificate.loading_number}</p>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <p className="text-sm text-gray-500">Export License</p>
-                    <p className="text-lg font-semibold text-gray-900">{selectedCertificate.export_license}</p>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Certificate Information</h3>
+                  <div className="space-y-4">
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-sm text-gray-500">Certificate Number</p>
+                      <p className="text-lg font-semibold text-gray-900">{selectedCertificate.certificate_number}</p>
+                    </div>
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-sm text-gray-500">Loading Number</p>
+                      <p className="text-lg font-semibold text-gray-900">{selectedCertificate.loading_number}</p>
+                    </div>
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-sm text-gray-500">Export License</p>
+                      <p className="text-lg font-semibold text-gray-900">{selectedCertificate.export_license}</p>
+                    </div>
+                    <div className="bg-purple-50 p-4 rounded-lg">
+                      <p className="text-sm text-purple-600">Quantity</p>
+                      <p className="text-lg font-semibold text-gray-900">{selectedCertificate.quantity} kg</p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Origin & Dates</h3>

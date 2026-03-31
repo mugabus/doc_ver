@@ -15,6 +15,7 @@ interface CertificateData {
   export_license: string;
   shipment_date: string;
   expiration_date: string;
+  quantity: string;
 }
 
 export function CertificateGenerator() {
@@ -30,6 +31,7 @@ export function CertificateGenerator() {
     export_license: '',
     shipment_date: '',
     expiration_date: '',
+    quantity: '',
   });
 
   const [qrCodeUrl, setQrCodeUrl] = useState<string>('');
@@ -113,6 +115,7 @@ export function CertificateGenerator() {
       export_license: 'CN-5007099',
       shipment_date: new Date().toISOString().split('T')[0],
       expiration_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      quantity: '1000',
     });
   };
 
@@ -303,6 +306,23 @@ export function CertificateGenerator() {
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="CN-5007099"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Quantity (kg) *
+                </label>
+                <input
+                  type="number"
+                  name="quantity"
+                  value={formData.quantity}
+                  onChange={handleChange}
+                  required
+                  step="0.01"
+                  min="0"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="1000"
                 />
               </div>
 
