@@ -15,19 +15,38 @@ import {
   Filter,
   LogOut,
   User,
-  Loader2
+  Loader2,
+  Edit3,
+  Save,
+  X
 } from 'lucide-react';
-import { getAllCertificates, getCertificateStats, deleteCertificate } from '../lib/database';
+import { getAllCertificates, getCertificateStats, deleteCertificate, updateCertificate } from '../lib/database';
 import { Certificate } from '../lib/supabase';
 
 interface DashboardProps {
   onLogout: () => void;
 }
 
+interface EditFormData {
+  loading_number: string;
+  origin_country: string;
+  province: string;
+  exporter_name: string;
+  exporter_address: string;
+  importer_name: string;
+  importer_address: string;
+  export_license: string;
+  shipment_date: string;
+  expiration_date: string;
+}
+
 export function Dashboard({ onLogout }: DashboardProps) {
   const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCertificate, setSelectedCertificate] = useState<Certificate | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editFormData, setEditFormData] = useState<EditFormData | null>(null);
+  const [saving, setSaving] = useState(false);
   const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'expired'>('all');
   const [userEmail, setUserEmail] = useState<string>('');
   const [loading, setLoading] = useState(true);
@@ -100,7 +119,262 @@ export function Dashboard({ onLogout }: DashboardProps) {
     }
   };
 
+  const handleEditCertificate = (cert: Certificate) => {
+    setSelectedCertificate(cert);
+    setEditFormData({
+      loading_number: cert.loading_number,
+      origin_country: cert.origin_country,
+      province: cert.province,
+      exporter_name: cert.exporter_name,
+      exporter_address: cert.exporter_address,
+      importer_name: cert.importer_name,
+      importer_address: cert.importer_address,
+      export_license: cert.export_license,
+      shipment_date: cert.shipment_date,
+      expiration_date: cert.expiration_date,
+    });
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditFormData(null);
+  };
+
+  const handleEditFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (editFormData) {
+      setEditFormData({
+        ...editFormData,
+        [e.target.name]: e.target.value,
+      });
+    }
+  };
+
+  const handleSaveEdit = async () => {
+    if (!selectedCertificate || !editFormData) return;
+    
+    setSaving(true);
+    const success = await updateCertificate(selectedCertificate.id, editFormData);
+    setSaving(false);
+    
+    if (success) {
+      // Update the local state
+      const updatedCert = { ...selectedCertificate, ...editFormData } as Certificate;
+      setSelectedCertificate(updatedCert);
+      // Update the certificates list
+      setCertificates(certificates.map(c => c.id === selectedCertificate.id ? updatedCert : c));
+      setIsEditing(false);
+      setEditFormData(null);
+    } else {
+      alert('Error updating certificate. Please try again.');
+    }
+  };
+
   if (selectedCertificate) {
+    // Edit Mode
+    if (isEditing && editFormData) {
+      return (
+        <div className="min-h-screen bg-gray-50">
+          {/* Header */}
+          <header className="bg-white shadow-sm">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <button onClick={handleBackToList} className="p-2 hover:bg-gray-100 rounded-lg transition">
+                    <ArrowLeft className="w-5 h-5 text-gray-600" />
+                  </button>
+                  <div className="bg-blue-600 p-2 rounded-lg">
+                    <Edit3 className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-xl font-bold text-gray-900">Edit Certificate</h1>
+                    <p className="text-xs text-gray-500">{selectedCertificate.certificate_number}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <form className="space-y-6">
+                {/* Certificate Information */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Certificate Information</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Certificate Number</label>
+                      <input
+                        type="text"
+                        value={selectedCertificate.certificate_number}
+                        disabled
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Loading Number *</label>
+                      <input
+                        type="text"
+                        name="loading_number"
+                        value={editFormData.loading_number}
+                        onChange={handleEditFormChange}
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Export License *</label>
+                      <input
+                        type="text"
+                        name="export_license"
+                        value={editFormData.export_license}
+                        onChange={handleEditFormChange}
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Origin & Dates */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Origin & Dates</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Country of Origin *</label>
+                      <input
+                        type="text"
+                        name="origin_country"
+                        value={editFormData.origin_country}
+                        onChange={handleEditFormChange}
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Province *</label>
+                      <input
+                        type="text"
+                        name="province"
+                        value={editFormData.province}
+                        onChange={handleEditFormChange}
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Shipment Date *</label>
+                      <input
+                        type="date"
+                        name="shipment_date"
+                        value={editFormData.shipment_date}
+                        onChange={handleEditFormChange}
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Expiration Date *</label>
+                      <input
+                        type="date"
+                        name="expiration_date"
+                        value={editFormData.expiration_date}
+                        onChange={handleEditFormChange}
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Trade Parties */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Trade Parties</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Exporter Name *</label>
+                      <input
+                        type="text"
+                        name="exporter_name"
+                        value={editFormData.exporter_name}
+                        onChange={handleEditFormChange}
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Exporter Address *</label>
+                      <textarea
+                        name="exporter_address"
+                        value={editFormData.exporter_address}
+                        onChange={handleEditFormChange}
+                        required
+                        rows={2}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Importer Name *</label>
+                      <input
+                        type="text"
+                        name="importer_name"
+                        value={editFormData.importer_name}
+                        onChange={handleEditFormChange}
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Importer Address *</label>
+                      <textarea
+                        name="importer_address"
+                        value={editFormData.importer_address}
+                        onChange={handleEditFormChange}
+                        required
+                        rows={2}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200">
+                  <button
+                    type="button"
+                    onClick={handleCancelEdit}
+                    className="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition"
+                  >
+                    <X className="w-4 h-4 mr-2" />
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSaveEdit}
+                    disabled={saving}
+                    className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {saving ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="w-4 h-4 mr-2" />
+                        Save Changes
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </main>
+        </div>
+      );
+    }
+
+    // View Mode
     return (
       <div className="min-h-screen bg-gray-50">
         {/* Header */}
@@ -204,6 +478,13 @@ export function Dashboard({ onLogout }: DashboardProps) {
             <div className="mt-8 pt-8 border-t border-gray-200">
               <div className="flex items-center justify-end">
                 <div className="flex space-x-3">
+                  <button 
+                    onClick={() => handleEditCertificate(selectedCertificate)}
+                    className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition"
+                  >
+                    <Edit3 className="w-4 h-4 mr-2" />
+                    Edit Certificate
+                  </button>
                   <button 
                     onClick={() => handleDeleteCertificate(selectedCertificate.id)}
                     className="inline-flex items-center px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg font-medium transition"
@@ -394,6 +675,13 @@ export function Dashboard({ onLogout }: DashboardProps) {
                                 title="View Details"
                               >
                                 <Eye className="w-4 h-4 text-gray-600" />
+                              </button>
+                              <button
+                                onClick={() => handleEditCertificate(cert)}
+                                className="p-2 hover:bg-blue-100 rounded-lg transition"
+                                title="Edit Certificate"
+                              >
+                                <Edit3 className="w-4 h-4 text-blue-600" />
                               </button>
                               <button
                                 className="p-2 hover:bg-gray-100 rounded-lg transition"

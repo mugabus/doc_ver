@@ -89,6 +89,28 @@ export async function deleteCertificate(id: string): Promise<boolean> {
   }
 }
 
+// Update a certificate
+export async function updateCertificate(id: string, data: Partial<Omit<Certificate, 'id' | 'created_at'>>): Promise<Certificate | null> {
+  try {
+    const { data: certificate, error } = await supabase
+      .from('certificates')
+      .update(data)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error updating certificate:', error);
+      return null;
+    }
+
+    return certificate;
+  } catch (error) {
+    console.error('Error updating certificate:', error);
+    return null;
+  }
+}
+
 // Get certificate statistics
 export async function getCertificateStats(): Promise<{
   total: number;
