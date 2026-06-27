@@ -97,17 +97,16 @@ export function Home() {
             </div>
 
             <div className="hidden md:flex items-center space-x-6">
+              <a href="#" className="hover:text-blue-200 transition">FR</a>
+              <span className="text-blue-400">|</span>
+              <a href="#" className="hover:text-blue-200 transition">EN</a>
+
               {/* PHONE ADDED */}
+              <span className="text-blue-400">|</span>
               <div className="flex items-center space-x-2">
                 <Phone className="w-4 h-4" />
                 <span>+243 971 404 588</span>
               </div>
-
-              <span className="text-blue-400">|</span>
-
-              <a href="#" className="hover:text-blue-200 transition">FR</a>
-              <span className="text-blue-400">|</span>
-              <a href="#" className="hover:text-blue-200 transition">EN</a>
             </div>
           </div>
         </div>
@@ -141,108 +140,41 @@ export function Home() {
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
-
-          {mobileMenuOpen && (
-            <nav className="lg:hidden py-4 border-t border-gray-200">
-              <div className="flex flex-col space-y-3">
-                <a href="/" className="text-blue-900 font-semibold py-2">Accueil</a>
-                <a href="#" className="text-gray-600 py-2">À propos</a>
-                <a href="#" className="text-gray-600 py-2">Services</a>
-                <a href="#" className="text-gray-600 py-2">Actualités</a>
-                <a href="#" className="text-gray-600 py-2">Contact</a>
-              </div>
-            </nav>
-          )}
         </div>
       </header>
-
-      {/* HERO + REST OF YOUR CODE (UNCHANGED) */}
-      {/* ... everything else stays exactly the same until footer ... */}
 
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
 
-            <div className="col-span-1 md:col-span-2">
-              <div className="flex items-center space-x-3 mb-4">
-                <img 
-                  src="/logo-cr.png" 
-                  alt="CIRGL Logo" 
-                  className="w-12 h-12 object-contain"
-                />
-                <div>
-                  <h3 className="text-white font-bold text-lg">CIRGL</h3>
-                  <p className="text-gray-500 text-xs">Système de Certification</p>
-                </div>
-              </div>
-
-              <p className="text-gray-400 text-sm mb-6 max-w-md">
-                La Conférence Internationale sur la Région des Grands Lacs œuvre pour la paix, 
-                la sécurité et le développement durable dans la région des Grands Lacs africains.
-              </p>
-
-              <div className="flex space-x-4">
-                <a href="#" className="w-10 h-10 bg-gray-800 hover:bg-blue-600 rounded-full flex items-center justify-center transition">
-                  <Globe className="w-5 h-5" />
-                </a>
-                <a href="#" className="w-10 h-10 bg-gray-800 hover:bg-blue-600 rounded-full flex items-center justify-center transition">
-                  <Mail className="w-5 h-5" />
-                </a>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="text-white font-semibold mb-4">Liens Rapides</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="/" className="hover:text-white transition">Accueil</a></li>
-                <li><a href="#" className="hover:text-white transition">À propos</a></li>
-                <li><a href="#" className="hover:text-white transition">Services</a></li>
-                <li><a href="#" className="hover:text-white transition">Actualités</a></li>
-                <li><a href="#" className="hover:text-white transition">Contact</a></li>
-              </ul>
-            </div>
-
             <div>
               <h4 className="text-white font-semibold mb-4">Contact</h4>
               <ul className="space-y-3 text-sm">
-                <li className="flex items-start">
-                  <MapPin className="w-5 h-5 text-blue-400 mr-2 mt-0.5 flex-shrink-0" />
+
+                <li className="flex items-center">
+                  <MapPin className="w-5 h-5 text-blue-400 mr-2" />
                   <span>Boulevard du 30 Juin, Kinshasa, RD Congo</span>
                 </li>
 
-                {/* PHONE ADDED HERE */}
+                {/* PHONE ADDED */}
                 <li className="flex items-center">
-                  <Phone className="w-5 h-5 text-blue-400 mr-2 flex-shrink-0" />
+                  <Phone className="w-5 h-5 text-blue-400 mr-2" />
                   <span>+243 971 404 588</span>
                 </li>
 
                 <li className="flex items-center">
-                  <Mail className="w-5 h-5 text-blue-400 mr-2 flex-shrink-0" />
+                  <Mail className="w-5 h-5 text-blue-400 mr-2" />
                   <span>info@cirgl.org</span>
                 </li>
 
                 <li className="flex items-center">
-                  <Clock className="w-5 h-5 text-blue-400 mr-2 flex-shrink-0" />
+                  <Clock className="w-5 h-5 text-blue-400 mr-2" />
                   <span>Lun - Ven: 8h - 17h</span>
                 </li>
               </ul>
             </div>
 
-          </div>
-
-          <div className="border-t border-gray-800 mt-8 pt-8">
-            <div className="flex flex-col md:flex-row items-center justify-between text-sm">
-              <p className="text-gray-500">
-                © {new Date().getFullYear()} CIRGL - Tous droits réservés
-              </p>
-
-              <div className="flex items-center space-x-6 mt-4 md:mt-0">
-                <a href="#" className="text-gray-500 hover:text-white transition">Mentions légales</a>
-                <a href="#" className="text-gray-500 hover:text-white transition">Politique de confidentialité</a>
-                <a href="#" className="text-gray-500 hover:text-white transition">Conditions d'utilisation</a>
-              </div>
-            </div>
           </div>
         </div>
       </footer>
