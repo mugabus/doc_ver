@@ -85,7 +85,6 @@ export function Home() {
 
   return (
     <div className="min-h-screen bg-white">
-
       {/* Top Bar */}
       <div className="bg-blue-900 text-white py-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -96,10 +95,19 @@ export function Home() {
                 Conférence Internationale sur la Région des Grands Lacs
               </span>
             </div>
+
+            {/* TOP BAR PHONE ADDED */}
             <div className="hidden md:flex items-center space-x-6">
               <a href="#" className="hover:text-blue-200 transition">FR</a>
               <span className="text-blue-400">|</span>
               <a href="#" className="hover:text-blue-200 transition">EN</a>
+
+              <span className="text-blue-400">|</span>
+
+              <div className="flex items-center space-x-2">
+                <Phone className="w-4 h-4" />
+                <span>+243 971 404 588</span>
+              </div>
             </div>
           </div>
         </div>
@@ -170,6 +178,7 @@ export function Home() {
                 Plateforme officielle de vérification et de certification des minerais 
                 de la Conférence Internationale sur la Région des Grands Lacs.
               </p>
+
               <div className="flex flex-col sm:flex-row gap-4">
                 <a
                   href="#verification"
@@ -209,7 +218,6 @@ export function Home() {
           </div>
         </div>
 
-        {/* Wave Divider */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
