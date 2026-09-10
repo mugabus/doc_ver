@@ -29,7 +29,17 @@ export function CertificateViewer() {
           }
         } else if (dataParam) {
           // Legacy: decode from URL parameter
-          const decodedData = JSON.parse(decodeURIComponent(dataParam)) as Certificate;
+          // Note: URLSearchParams already decodes the value once, so parse it directly.
+          // Fall back to one manual decode for payloads double-encoded by older versions.
+          let decodedData: Certificate | null = null;
+          try {
+            decodedData = JSON.parse(dataParam) as Certificate;
+          } catch {
+            decodedData = JSON.parse(decodeURIComponent(dataParam)) as Certificate;
+          }
+          if (!decodedData || !decodedData.certificate_number) {
+            throw new Error('Invalid certificate data');
+          }
           setCertificate(decodedData);
         } else {
           setError('No certificate code provided');
@@ -47,9 +57,9 @@ export function CertificateViewer() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100 flex items-center justify-center p-4">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading certificate...</p>
         </div>
       </div>
@@ -58,7 +68,7 @@ export function CertificateViewer() {
 
   if (error || !certificate) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full text-center">
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <AlertCircle className="w-8 h-8 text-red-600" />
@@ -67,7 +77,7 @@ export function CertificateViewer() {
           <p className="text-gray-600">{error || 'The certificate you are looking for does not exist.'}</p>
           <a
             href="/"
-            className="mt-6 inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition"
+            className="mt-6 inline-block px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg transition"
           >
             Return to Home
           </a>
@@ -79,9 +89,9 @@ export function CertificateViewer() {
   const isExpired = new Date(certificate.expiration_date) <= new Date();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm">
+      <header className="bg-white border-b border-sky-200 shadow-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <a href="/" className="flex items-center">
@@ -93,7 +103,7 @@ export function CertificateViewer() {
             </a>
             <a
               href="/"
-              className="text-blue-600 hover:text-blue-700 font-medium"
+              className="text-gray-500 hover:text-gray-700 font-medium"
             >
               ← Back to Home
             </a>
@@ -104,7 +114,7 @@ export function CertificateViewer() {
       <div className="py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-6">
+            <div className="bg-gradient-to-r from-sky-600 to-sky-700 px-8 py-6">
               <div className="flex items-center justify-center mb-4">
                 <img 
                   src="/logo-cr.png" 
@@ -115,7 +125,7 @@ export function CertificateViewer() {
               <h1 className="text-3xl font-bold text-white text-center mb-2">
                 CERTIFICAT DE LA CONFÉRENCE INTERNATIONALE
               </h1>
-              <p className="text-blue-100 text-center text-lg">
+              <p className="text-sky-100 text-center text-lg">
                 SUR LA REGION DES GRANDS LACS
               </p>
             </div>
@@ -145,7 +155,7 @@ export function CertificateViewer() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex items-start space-x-3">
-                    <Package className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                    <Package className="w-5 h-5 text-sky-600 mt-1 flex-shrink-0" />
                     <div>
                       <p className="text-sm font-medium text-gray-500">Chargement N°</p>
                       <p className="text-lg font-semibold text-gray-900">{certificate.loading_number}</p>
@@ -155,7 +165,7 @@ export function CertificateViewer() {
 
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex items-start space-x-3">
-                    <CreditCard className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                    <CreditCard className="w-5 h-5 text-sky-600 mt-1 flex-shrink-0" />
                     <div>
                       <p className="text-sm font-medium text-gray-500">Numéro du Certificat CIRGL</p>
                       <p className="text-lg font-semibold text-gray-900">{certificate.certificate_number}</p>
@@ -166,7 +176,7 @@ export function CertificateViewer() {
 
               <div className="border-t border-gray-200 pt-6">
                 <div className="flex items-start space-x-3 mb-4">
-                  <MapPin className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                  <MapPin className="w-5 h-5 text-sky-600 mt-1 flex-shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-gray-500">Origine</p>
                     <p className="text-lg font-semibold text-gray-900">{certificate.origin_country}</p>
@@ -177,7 +187,7 @@ export function CertificateViewer() {
 
               <div className="border-t border-gray-200 pt-6">
                 <div className="flex items-start space-x-3 mb-4">
-                  <Building2 className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                  <Building2 className="w-5 h-5 text-sky-600 mt-1 flex-shrink-0" />
                   <div className="flex-1">
                     <p className="text-sm font-medium text-gray-500 mb-2">Exportateur</p>
                     <p className="text-lg font-semibold text-gray-900">{certificate.exporter_name}</p>
@@ -186,7 +196,7 @@ export function CertificateViewer() {
                 </div>
 
                 <div className="flex items-start space-x-3 mt-4">
-                  <Building2 className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                  <Building2 className="w-5 h-5 text-sky-600 mt-1 flex-shrink-0" />
                   <div className="flex-1">
                     <p className="text-sm font-medium text-gray-500 mb-2">Importateur</p>
                     <p className="text-lg font-semibold text-gray-900">{certificate.importer_name}</p>
@@ -207,9 +217,9 @@ export function CertificateViewer() {
                     </div>
                   </div>
 
-                  <div className="bg-blue-50 rounded-lg p-4">
+                  <div className="bg-sky-50 rounded-lg p-4">
                     <div className="flex items-start space-x-2">
-                      <CreditCard className="w-4 h-4 text-blue-600 mt-1 flex-shrink-0" />
+                      <CreditCard className="w-4 h-4 text-sky-600 mt-1 flex-shrink-0" />
                       <div>
                         <p className="text-xs font-medium text-gray-600">N° de Licence d'Exportation</p>
                         <p className="text-sm font-semibold text-gray-900 mt-1">{certificate.export_license}</p>

@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { 
   FileCheck, 
-  QrCode, 
-  Search, 
-  Download, 
-  Plus, 
-  BarChart3, 
-  Users, 
+  QrCode,
+  Search,
+  Download,
+  Plus,
+  BarChart3,
+  Users,
   Globe,
   Calendar,
   ArrowLeft,
@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { getAllCertificates, getCertificateStats, deleteCertificate, updateCertificate } from '../lib/database';
 import { Certificate } from '../lib/supabase';
+import QRCode from 'qrcode';
 
 interface DashboardProps {
   onLogout: () => void;
@@ -110,13 +111,41 @@ export function Dashboard({ onLogout }: DashboardProps) {
     setSelectedCertificate(null);
   };
 
+  const refreshStats = async () => {
+    const statsData = await getCertificateStats();
+    setStats([
+      { label: 'Total Certificates', value: statsData.total.toString(), icon: FileCheck, color: 'blue' },
+      { label: 'Active', value: statsData.active.toString(), icon: QrCode, color: 'green' },
+      { label: 'Expired', value: statsData.expired.toString(), icon: BarChart3, color: 'red' },
+      { label: 'Exporters', value: statsData.exporters.toString(), icon: Users, color: 'purple' },
+    ]);
+  };
+
   const handleDeleteCertificate = async (id: string) => {
     if (confirm('Are you sure you want to delete this certificate?')) {
       const success = await deleteCertificate(id);
       if (success) {
         setCertificates(certificates.filter(c => c.id !== id));
         setSelectedCertificate(null);
+        // Keep the stats cards in sync with the deletion
+        await refreshStats();
+      } else {
+        alert('Error deleting certificate. Please try again.');
       }
+    }
+  };
+
+  const handleDownloadQR = async (cert: Certificate) => {
+    try {
+      const url = `${window.location.origin}/verify?code=${cert.certificate_number}`;
+      const dataUrl = await QRCode.toDataURL(url, { width: 400, margin: 2 });
+      const link = document.createElement('a');
+      link.download = `certificate-${cert.certificate_number}-qr.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (error) {
+      console.error('Error generating QR code:', error);
+      alert('Error generating QR code. Please try again.');
     }
   };
 
@@ -185,7 +214,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                   <button onClick={handleBackToList} className="p-2 hover:bg-gray-100 rounded-lg transition">
                     <ArrowLeft className="w-5 h-5 text-gray-600" />
                   </button>
-                  <div className="bg-blue-600 p-2 rounded-lg">
+                  <div className="bg-sky-600 p-2 rounded-lg">
                     <Edit3 className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -221,7 +250,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                         value={editFormData.loading_number}
                         onChange={handleEditFormChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                       />
                     </div>
                     <div>
@@ -232,7 +261,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                         value={editFormData.export_license}
                         onChange={handleEditFormChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                       />
                     </div>
                     <div>
@@ -245,7 +274,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                         required
                         step="0.01"
                         min="0"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                       />
                     </div>
                   </div>
@@ -263,7 +292,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                         value={editFormData.origin_country}
                         onChange={handleEditFormChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                       />
                     </div>
                     <div>
@@ -274,7 +303,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                         value={editFormData.province}
                         onChange={handleEditFormChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                       />
                     </div>
                     <div>
@@ -285,7 +314,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                         value={editFormData.shipment_date}
                         onChange={handleEditFormChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                       />
                     </div>
                     <div>
@@ -296,7 +325,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                         value={editFormData.expiration_date}
                         onChange={handleEditFormChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                       />
                     </div>
                   </div>
@@ -314,7 +343,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                         value={editFormData.exporter_name}
                         onChange={handleEditFormChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                       />
                     </div>
                     <div>
@@ -325,7 +354,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                         onChange={handleEditFormChange}
                         required
                         rows={2}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                       />
                     </div>
                     <div>
@@ -336,7 +365,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                         value={editFormData.importer_name}
                         onChange={handleEditFormChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                       />
                     </div>
                     <div>
@@ -347,7 +376,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                         onChange={handleEditFormChange}
                         required
                         rows={2}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                       />
                     </div>
                   </div>
@@ -367,7 +396,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                     type="button"
                     onClick={handleSaveEdit}
                     disabled={saving}
-                    className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="inline-flex items-center px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {saving ? (
                       <>
@@ -400,7 +429,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                 <button onClick={handleBackToList} className="p-2 hover:bg-gray-100 rounded-lg transition">
                   <ArrowLeft className="w-5 h-5 text-gray-600" />
                 </button>
-                <div className="bg-blue-600 p-2 rounded-lg">
+                <div className="bg-sky-600 p-2 rounded-lg">
                   <FileCheck className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -413,7 +442,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                   href={`/?code=${selectedCertificate.certificate_number}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition"
+                  className="inline-flex items-center px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition"
                 >
                   <Eye className="w-4 h-4 mr-2" />
                   View Public Page
@@ -481,8 +510,8 @@ export function Dashboard({ onLogout }: DashboardProps) {
             <div className="mt-8 pt-8 border-t border-gray-200">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Trade Parties</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-blue-50 p-6 rounded-xl">
-                  <h4 className="font-semibold text-blue-900 mb-3">Exporter</h4>
+                <div className="bg-sky-50 p-6 rounded-xl">
+                  <h4 className="font-semibold text-sky-900 mb-3">Exporter</h4>
                   <p className="text-lg font-semibold text-gray-900">{selectedCertificate.exporter_name}</p>
                   <p className="text-gray-600 mt-1">{selectedCertificate.exporter_address}</p>
                 </div>
@@ -499,7 +528,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                 <div className="flex space-x-3">
                   <button 
                     onClick={() => handleEditCertificate(selectedCertificate)}
-                    className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition"
+                    className="inline-flex items-center px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition"
                   >
                     <Edit3 className="w-4 h-4 mr-2" />
                     Edit Certificate
@@ -511,7 +540,10 @@ export function Dashboard({ onLogout }: DashboardProps) {
                     <Trash2 className="w-4 h-4 mr-2" />
                     Delete
                   </button>
-                  <button className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition">
+                  <button
+                    onClick={() => handleDownloadQR(selectedCertificate)}
+                    className="inline-flex items-center px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition"
+                  >
                     <Download className="w-4 h-4 mr-2" />
                     Download QR
                   </button>
@@ -544,13 +576,13 @@ export function Dashboard({ onLogout }: DashboardProps) {
               </div>
               <a
                 href="/"
-                className="text-gray-600 hover:text-blue-600 font-medium transition"
+                className="text-gray-600 hover:text-sky-600 font-medium"
               >
                 Home
               </a>
               <a
-                href="/?action=generate"
-                className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition"
+                href="/generate"
+                className="inline-flex items-center px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 New Certificate
@@ -575,7 +607,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-500">{stat.label}</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">{stat.value}</p>
+                  <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
                 </div>
                 <div className={`p-3 rounded-xl bg-${stat.color}-100`}>
                   <stat.icon className={`w-6 h-6 text-${stat.color}-600`} />
@@ -598,7 +630,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                     placeholder="Search certificates..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full md:w-80"
+                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent w-full md:w-80"
                   />
                 </div>
                 <div className="flex items-center space-x-2">
@@ -606,7 +638,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                   <select
                     value={filterStatus}
                     onChange={(e) => setFilterStatus(e.target.value as 'all' | 'active' | 'expired')}
-                    className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                   >
                     <option value="all">All Status</option>
                     <option value="active">Active</option>
@@ -619,7 +651,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
 
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+              <Loader2 className="w-8 h-8 text-sky-600 animate-spin" />
             </div>
           ) : (
             <>
@@ -653,7 +685,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                       return (
                         <tr key={cert.id} className="hover:bg-gray-50">
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <span className="font-semibold text-blue-600">{cert.certificate_number}</span>
+                            <span className="font-semibold text-sky-600">{cert.certificate_number}</span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div>
@@ -697,12 +729,13 @@ export function Dashboard({ onLogout }: DashboardProps) {
                               </button>
                               <button
                                 onClick={() => handleEditCertificate(cert)}
-                                className="p-2 hover:bg-blue-100 rounded-lg transition"
+                                className="p-2 hover:bg-sky-100 rounded-lg transition"
                                 title="Edit Certificate"
                               >
-                                <Edit3 className="w-4 h-4 text-blue-600" />
+                                <Edit3 className="w-4 h-4 text-sky-600" />
                               </button>
                               <button
+                                onClick={() => handleDownloadQR(cert)}
                                 className="p-2 hover:bg-gray-100 rounded-lg transition"
                                 title="Download QR"
                               >

@@ -1,84 +1,89 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { CertificateGenerator } from './components/CertificateGenerator';
 import { CertificateViewer } from './components/CertificateViewer';
-import { Home } from './components/Home';
+import { Home } from './pages/Home';
+import { About } from './pages/About';
+import { Services } from './pages/Services';
+import { News } from './pages/News';
+import { Contact } from './pages/Contact';
 import { Dashboard } from './components/Dashboard';
 import { Login } from './components/Login';
 
-type AppView = 'home' | 'generator' | 'dashboard' | 'viewer' | 'login';
-
-function App() {
-  const [view, setView] = useState<AppView>('home');
-
+function ScrollToTop() {
+  const { pathname } = useLocation();
   useEffect(() => {
-    // Check authentication status
-    const authStatus = localStorage.getItem('isAuthenticated') === 'true';
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
-    const params = new URLSearchParams(window.location.search);
-    const hasData = params.has('data');
-    const hasCode = params.has('code');
-    const action = params.get('action');
+// Route guard: pages like /generate and /dashboard require authentication
+function RequireAuth({ children }: { children: React.ReactNode }) {
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+  if (isAuthenticated) {
+    return <>{children}</>;
+  }
+  return <Navigate to="/login" replace />;
+}
 
-    if (hasCode) {
-      // Certificate verification via code (from QR scan)
-      setView('viewer');
-    } else if (hasData) {
-      const data = params.get('data');
-      if (data) {
-        try {
-          const parsed = JSON.parse(decodeURIComponent(data));
-          if (parsed.certificate_number) {
-            setView('viewer');
-          }
-        } catch {
-          setView('viewer');
-        }
-      }
-    } else if (action === 'generate') {
-      // Generator requires authentication - redirect to login if not authenticated
-      if (authStatus) {
-        setView('generator');
-      } else {
-        setView('login');
-      }
-    } else if (action === 'dashboard') {
-      if (authStatus) {
-        setView('dashboard');
-      } else {
-        setView('login');
-      }
-    } else if (action === 'verify') {
-      setView('home');
-    } else {
-      setView('home');
-    }
-  }, []);
+function LoginRoute() {
+  const navigate = useNavigate();
 
   const handleLogin = () => {
-    setView('dashboard');
+    // Route to the page the user originally intended (e.g. /generate)
+    const action = new URLSearchParams(window.location.search).get('action');
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+
+    if (isAuthenticated && action === 'generate') {
+      navigate('/generate');
+    } else {
+      navigate('/dashboard');
+    }
   };
+
+  return <Login onLogin={handleLogin} />;
+}
+
+function DashboardRoute() {
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('userEmail');
-    setView('home');
-    window.location.href = '/';
+    navigate('/');
   };
 
-  // Render based on current view
-  switch (view) {
-    case 'generator':
-      return <CertificateGenerator />;
-    case 'dashboard':
-      return <Dashboard onLogout={handleLogout} />;
-    case 'login':
-      return <Login onLogin={handleLogin} />;
-    case 'viewer':
-      return <CertificateViewer />;
-    case 'home':
-    default:
-      return <Home />;
-  }
+  return <Dashboard onLogout={handleLogout} />;
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <ScrollToTop />
+      <Routes>
+        {/* Public pages */}
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/news" element={<News />} />
+        <Route path="/contact" element={<Contact />} />
+
+        {/* Certificate verification (via QR scan or manual code) */}
+        <Route path="/verify" element={<CertificateViewer />} />
+        {/* Backwards-compatible redirects for old query-param URLs */}
+        <Route path="/index.html" element={<Navigate to="/" replace />} />
+
+        {/* Auth-protected pages */}
+        <Route path="/generate" element={<RequireAuth><CertificateGenerator /></RequireAuth>} />
+        <Route path="/dashboard" element={<RequireAuth><DashboardRoute /></RequireAuth>} />
+        <Route path="/login" element={<LoginRoute />} />
+
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;

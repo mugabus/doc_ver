@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import QRCode from 'qrcode';
 import { QrCode, Download, FileCheck, Loader2, Eye } from 'lucide-react';
-import { saveCertificate, generateCertificateNumber } from '../lib/database';
+import { saveCertificate, generateCertificateNumber, getCountryPrefix, ORIGIN_COUNTRIES } from '../lib/database';
 
 interface CertificateData {
   certificate_number: string;
@@ -40,7 +40,7 @@ export function CertificateGenerator() {
   const [success, setSuccess] = useState(false);
   const [savedToDb, setSavedToDb] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -54,8 +54,14 @@ export function CertificateGenerator() {
     setSavedToDb(false);
 
     try {
+      // Validate dates
+      if (formData.shipment_date && formData.expiration_date && formData.expiration_date < formData.shipment_date) {
+        alert('The expiration date cannot be earlier than the shipment date.');
+        return;
+      }
+
       // Generate certificate number if not provided
-      const certificateNumber = formData.certificate_number || generateCertificateNumber();
+      const certificateNumber = formData.certificate_number || generateCertificateNumber(getCountryPrefix(formData.origin_country));
       const dataToSave = { ...formData, certificate_number: certificateNumber };
 
       // Save to Supabase database
@@ -67,7 +73,7 @@ export function CertificateGenerator() {
       }
 
       // Generate QR code with certificate number for verification
-      const certificateUrl = `${window.location.origin}/?code=${certificateNumber}`;
+      const certificateUrl = `${window.location.origin}/verify?code=${certificateNumber}`;
 
       const qrCode = await QRCode.toDataURL(certificateUrl, {
         width: 400,
@@ -90,8 +96,10 @@ export function CertificateGenerator() {
   };
 
   const downloadQRCode = () => {
+    if (!qrCodeUrl || !previewData) return;
     const link = document.createElement('a');
-    link.download = `certificate-${formData.certificate_number}-qr.png`;
+    // Use the number from the generated preview, not the (possibly edited) form state
+    link.download = `certificate-${previewData.certificate_number}-qr.png`;
     link.href = qrCodeUrl;
     link.click();
   };
@@ -120,12 +128,12 @@ export function CertificateGenerator() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm">
+      <header className="bg-white border-b border-sky-200 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <a href="/?action=dashboard" className="flex items-center">
+            <a href="/dashboard" className="flex items-center">
               <img 
                 src="/logo-cr.png" 
                 alt="CIRGL Logo" 
@@ -134,8 +142,8 @@ export function CertificateGenerator() {
             </a>
             <div className="flex items-center space-x-4">
               <a
-                href="/?action=dashboard"
-                className="text-blue-600 hover:text-blue-700 font-medium"
+                href="/dashboard"
+                className="text-sky-600 hover:text-sky-700 font-medium"
               >
                 ← Back to Dashboard
               </a>
@@ -153,7 +161,7 @@ export function CertificateGenerator() {
       <div className="max-w-6xl mx-auto py-12 px-4">
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-4">
-            <QrCode className="w-16 h-16 text-blue-600" />
+            <QrCode className="w-16 h-16 text-sky-600" />
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-2">Certificate QR Generator</h1>
           <p className="text-gray-600 text-lg">Generate QR codes for CIRGL certificates</p>
@@ -166,7 +174,7 @@ export function CertificateGenerator() {
               <button
                 type="button"
                 onClick={loadSampleData}
-                className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                className="text-sm text-sky-600 hover:text-sky-700 font-medium"
               >
                 Load Sample Data
               </button>
@@ -182,7 +190,7 @@ export function CertificateGenerator() {
                   name="certificate_number"
                   value={formData.certificate_number}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                   placeholder="Auto-generated if empty"
                 />
               </div>
@@ -197,7 +205,7 @@ export function CertificateGenerator() {
                   value={formData.loading_number}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                   placeholder="MSI 079109135400 2117 26"
                 />
               </div>
@@ -207,15 +215,22 @@ export function CertificateGenerator() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Origin Country *
                   </label>
-                  <input
-                    type="text"
+                  <select
                     name="origin_country"
                     value={formData.origin_country}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Country"
-                  />
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+                  >
+                    <option value="" disabled>
+                      Select a country
+                    </option>
+                    {ORIGIN_COUNTRIES.map(country => (
+                      <option key={country.value} value={country.value}>
+                        {country.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 <div>
@@ -228,7 +243,7 @@ export function CertificateGenerator() {
                     value={formData.province}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                     placeholder="Province"
                   />
                 </div>
@@ -244,7 +259,7 @@ export function CertificateGenerator() {
                   value={formData.exporter_name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                   placeholder="Company name"
                 />
               </div>
@@ -259,7 +274,7 @@ export function CertificateGenerator() {
                   onChange={handleChange}
                   required
                   rows={2}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                   placeholder="Full address"
                 />
               </div>
@@ -274,7 +289,7 @@ export function CertificateGenerator() {
                   value={formData.importer_name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                   placeholder="Company name"
                 />
               </div>
@@ -289,7 +304,7 @@ export function CertificateGenerator() {
                   onChange={handleChange}
                   required
                   rows={2}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                   placeholder="Full address"
                 />
               </div>
@@ -304,7 +319,7 @@ export function CertificateGenerator() {
                   value={formData.export_license}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                   placeholder="CN-5007099"
                 />
               </div>
@@ -321,7 +336,7 @@ export function CertificateGenerator() {
                   required
                   step="0.01"
                   min="0"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                   placeholder="1000"
                 />
               </div>
@@ -337,7 +352,7 @@ export function CertificateGenerator() {
                     value={formData.shipment_date}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                   />
                 </div>
 
@@ -351,7 +366,7 @@ export function CertificateGenerator() {
                     value={formData.expiration_date}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                   />
                 </div>
               </div>
@@ -359,7 +374,7 @@ export function CertificateGenerator() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                className="w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
               >
                 {loading ? (
                   <>
@@ -388,7 +403,7 @@ export function CertificateGenerator() {
 
             {success && qrCodeUrl && (
               <div className="space-y-6">
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-xl flex items-center justify-center">
+                <div className="bg-gradient-to-br from-sky-50 to-sky-100 p-8 rounded-xl flex items-center justify-center">
                   <img src={qrCodeUrl} alt="QR Code" className="max-w-full rounded-lg shadow-lg" />
                 </div>
 
@@ -397,10 +412,15 @@ export function CertificateGenerator() {
                   <div>
                     <p className="text-green-800 font-medium">QR Code Generated Successfully!</p>
                     <p className="text-green-700 text-sm mt-1">
-                      Certificate Number: <strong>{formData.certificate_number}</strong>
+                      Certificate Number: <strong>{previewData?.certificate_number}</strong>
                     </p>
                     {savedToDb && (
                       <p className="text-green-700 text-sm mt-1">✓ Saved to database</p>
+                    )}
+                    {!savedToDb && (
+                      <p className="text-orange-700 text-sm mt-1">
+                        ⚠ Warning: the certificate could not be saved to the database. Scanning the QR code will not find this certificate.
+                      </p>
                     )}
                   </div>
                 </div>
@@ -408,17 +428,17 @@ export function CertificateGenerator() {
                 <div className="space-y-3">
                   <button
                     onClick={downloadQRCode}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 flex items-center justify-center"
+                    className="w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 flex items-center justify-center"
                   >
                     <Download className="w-5 h-5 mr-2" />
                     Download QR Code
                   </button>
 
                   <a
-                    href={`/?code=${formData.certificate_number}`}
+                    href={`/?code=${previewData?.certificate_number ?? ''}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block w-full bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-3 px-6 rounded-lg transition duration-200 text-center"
+                    className="block w-full bg-white border-2 border-sky-600 text-sky-600 hover:bg-sky-50 font-semibold py-3 px-6 rounded-lg transition duration-200 text-center"
                   >
                     View Certificate
                   </a>

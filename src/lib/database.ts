@@ -1,27 +1,60 @@
 import { supabase, Certificate } from './supabase';
 
-// Generate a unique certificate number
-export function generateCertificateNumber(): string {
-  const prefix = 'COD';
-  const number = Math.floor(Math.random() * 900000) + 100000;
-  return `${prefix}${number}`;
+// Allowed origin countries and their certificate number prefixes
+export const ORIGIN_COUNTRIES = [
+  { value: 'RÉPUBLIQUE DÉMOCRATIQUE DU CONGO', label: 'RDC (Congo)', prefix: 'COD' },
+  { value: 'UGANDA', label: 'Uganda', prefix: 'UGA' },
+  { value: 'BURUNDI', label: 'Burundi', prefix: 'BDI' },
+  { value: 'KENYA', label: 'Kenya', prefix: 'KEN' },
+] as const;
+
+// Get the certificate number prefix for a given origin country (default: COD)
+export function getCountryPrefix(originCountry: string): string {
+  const match = ORIGIN_COUNTRIES.find(c => c.value === originCountry);
+  return match ? match.prefix : 'COD';
+}
+
+// Generate a unique certificate number: <PREFIX> + YYMMDD + 4 random digits
+export function generateCertificateNumber(prefix: string = 'COD'): string {
+  const now = new Date();
+  const datePart = [
+    now.getFullYear().toString().slice(-2),
+    (now.getMonth() + 1).toString().padStart(2, '0'),
+    now.getDate().toString().padStart(2, '0'),
+  ].join('');
+  const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+  return `${prefix}${datePart}${random}`;
 }
 
 // Save a new certificate to the database
 export async function saveCertificate(data: Omit<Certificate, 'id' | 'created_at'>): Promise<Certificate | null> {
   try {
-    const { data: certificate, error } = await supabase
-      .from('certificates')
-      .insert([data])
-      .select()
-      .single();
+    let lastError: unknown = null;
+    // Retry a few times on unique-constraint violations (duplicate certificate number)
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const payload = attempt === 0
+        ? data
+        : { ...data, certificate_number: generateCertificateNumber(getCountryPrefix(data.origin_country)) };
 
-    if (error) {
-      console.error('Error saving certificate:', error);
-      return null;
+      const { data: certificate, error } = await supabase
+        .from('certificates')
+        .insert([payload])
+        .select()
+        .single();
+
+      if (!error) {
+        return certificate;
+      }
+
+      lastError = error;
+      // 23505 = unique violation in Postgres
+      if ((error as { code?: string }).code !== '23505') {
+        break;
+      }
     }
 
-    return certificate;
+    console.error('Error saving certificate:', lastError);
+    return null;
   } catch (error) {
     console.error('Error saving certificate:', error);
     return null;
