@@ -4,6 +4,17 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
+    { "source": "/verify", "destination": "/verify.html" },
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/assessment", "destination": "/assessment.html" },
+    { "source": "/compliance", "destination": "/compliance.html" },
+    { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/news", "destination": "/news.html" },
+    { "source": "/apply", "destination": "/apply.html" },
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/dashboard", "destination": "/admin.html" },
+    { "source": "/generate", "destination": "/admin.html" },
+    { "source": "/login", "destination": "/admin.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [

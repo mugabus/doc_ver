@@ -1,8 +1,16 @@
 # CIRGL — Système de Certification des Minerais
 
-Application web (React + Vite + TypeScript + Tailwind + Supabase) pour la génération,
-la gestion et la vérification en ligne des certificats d'exportation CIRGL, avec
-authentification par code QR.
+Système web pour la génération, la gestion et la vérification en ligne des
+certificats d'exportation CIRGL, avec authentification par code QR.
+
+Deux parties :
+
+- **Site public** — le template statique HTML/CSS/JS du dossier `frontend/`
+  (page d'accueil, Verify ICGLR, Assessment, etc.), connecté à la base
+  Supabase via `frontend/js/backend.js` (vérification des certificats).
+- **Panneau d'administration** — l'application React (`src/`, Vite +
+  TypeScript + Tailwind + Supabase), servie sur **`/admin.html`** :
+  génération des certificats (PDF + QR), dashboard, login.
 
 ## Démarrage local
 
@@ -11,12 +19,21 @@ npm install
 npm run dev
 ```
 
-Variables d'environnement requies (fichier `.env` à la racine) :
+- `http://localhost:5173/` → **site public** (template `frontend/`)
+- `http://localhost:5173/verify.html?code=<numéro>` → vérification d'un certificat
+- `http://localhost:5173/dashboard` → **panneau d'administration** React
+  (aussi `/login` et `/generate`, comme avant)
+
+Variables d'environnement requises (fichier `.env` à la racine) — uniquement
+pour le panneau d'administration React :
 
 ```
 VITE_SUPABASE_URL=https://<votre-projet>.supabase.co
 VITE_SUPABASE_ANON_KEY=<votre-clé-anon>
 ```
+
+Le site statique lit les mêmes identifiants Supabase (anon, public) dans
+`frontend/js/config.js`.
 
 ## Scripts
 
@@ -53,18 +70,30 @@ cache des assets) — aucune configuration build manuelle n'est nécessaire.
 > Le fichier `.env` local est ignoré par Git (`.gitignore`) : il ne part jamais
 > sur Vercel, d'où la saisie manuelle des variables dans le dashboard.
 
-### Routage SPA
+### Routage
 
-L'application utilise `react-router` (`BrowserRouter`). La règle de rewrite dans
-`vercel.json` renvoie toutes les URLs vers `index.html`, ce qui permet :
+Vite sert le dossier `frontend/` comme racine (`root` dans `vite.config.ts`) :
+les pages du template (`index.html`, `verify.html`, `assessment.html`, …) sont
+des fichiers statiques ; les assets (`/css`, `/js`, `/images`, `/fonts`) sont
+copiés tels quels dans `dist/` par le plugin `copy-template-assets`.
 
-- le rafraîchissement direct de `/dashboard`, `/generate`, `/about`, etc. ;
-- l'ouverture des liens de vérification `/verify?code=<numéro>` scannés depuis
-  les QR codes des certificats.
+Le panneau d'administration utilise `react-router` avec `BrowserRouter` et ses
+URL d'origine — `/login`, `/dashboard`, `/generate` (l'entrée est
+`frontend/admin.html`). Ces chemins sans extension sont mappés vers le fichier
+d'entrée par :
 
-Les fichiers statiques (`/flags/*.svg`, `/logo.png`, assets hashés) restent
-servis directement par Vercel — les rewrites ne s'appliquent qu'aux URLs sans
-fichier correspondant.
+- le plugin `spaAdminFallback` dans `vite.config.ts` pour `vite dev` et
+  `vite preview` ;
+- les rewrites `vercel.json` en production.
+
+Les rewrites `vercel.json` assurent aussi la compatibilité :
+
+- `/verify` → `/verify.html` (anciens QR codes de l'app React) ;
+- `/admin` → `/admin.html` (ouvre le dashboard) ;
+- tout le reste sans fichier correspondant → `/index.html` (site public).
+
+Les QR codes générés pointent vers `/verify.html?code=<numéro>`, ouvert par la
+page de vérification du site statique (`js/backend.js` interroge Supabase).
 
 ### Base de données
 
@@ -75,11 +104,15 @@ appliquées via le Supabase Dashboard / CLI, indépendamment de Vercel.
 ## Structure
 
 ```
-src/
-  components/    CertificateGenerator, CertificateViewer, Dashboard, Login, Layout
-  pages/         Home, About, Services, News, Contact
-  lib/           supabase.ts (client), database.ts (CRUD certificats), memberCountries.ts
-public/
-  flags/         Drapeaux SVG des 12 pays membres CIRGL
+frontend/          Site public statique (pages HTML du template)
+  js/backend.js    Intégration Supabase (lookup certificats — verify, assessment)
+  js/config.js     Identifiants Supabase anon (publics)
+  admin.html       Point d'entrée du panneau d'administration React
+src/               Panneau d'administration React
+  components/      CertificateGenerator, CertificateViewer, Dashboard, Login, Layout
+  pages/           Home, About, Services, News, Contact
+  lib/             supabase.ts (client), database.ts (CRUD certificats), memberCountries.ts
+public/            Assets servis à la racine (drapeaux /flags, échantillons, templates PDF)
+supabase/migrations/  Schéma de la table certificates (+ RLS)
 ```
 

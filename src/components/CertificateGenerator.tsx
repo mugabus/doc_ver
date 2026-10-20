@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import QRCode from 'qrcode';
-import { QrCode, Download, FileCheck, Loader2, Eye } from 'lucide-react';
+import { QrCode, Download, FileCheck, Loader2, Eye, FileText } from 'lucide-react';
 import { saveCertificate, generateCertificateNumber, getCountryPrefix, ORIGIN_COUNTRIES } from '../lib/database';
+import { buildFilledCongoCertificatePdf, isCongoCertificate } from '../lib/congoCertificatePdf';
 
 interface CertificateData {
   certificate_number: string;
@@ -16,6 +17,17 @@ interface CertificateData {
   shipment_date: string;
   expiration_date: string;
   quantity: string;
+  net_weight_kg: string;
+  minerals: string;
+  chemical_symbol: string;
+  content_percent: string;
+  metal_contained: string;
+  value_usd: string;
+  containers: string;
+  packing_type: string;
+  transiting: string;
+  carrier_name: string;
+  issued_in: string;
 }
 
 export function CertificateGenerator() {
@@ -32,11 +44,23 @@ export function CertificateGenerator() {
     shipment_date: '',
     expiration_date: '',
     quantity: '',
+    net_weight_kg: '',
+    minerals: '',
+    chemical_symbol: '',
+    content_percent: '',
+    metal_contained: '',
+    value_usd: '',
+    containers: '',
+    packing_type: '',
+    transiting: '',
+    carrier_name: '',
+    issued_in: '',
   });
 
   const [qrCodeUrl, setQrCodeUrl] = useState<string>('');
   const [previewData, setPreviewData] = useState<CertificateData | null>(null);
   const [loading, setLoading] = useState(false);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
   const [success, setSuccess] = useState(false);
   const [savedToDb, setSavedToDb] = useState(false);
 
@@ -62,7 +86,20 @@ export function CertificateGenerator() {
 
       // Generate certificate number if not provided
       const certificateNumber = formData.certificate_number || generateCertificateNumber(getCountryPrefix(formData.origin_country));
-      const dataToSave = { ...formData, certificate_number: certificateNumber };
+      // Numeric DB columns reject empty strings — convert blanks to null
+      const numeric = (v: string): string | number | null => {
+        const t = v.trim();
+        if (t === '') return null;
+        const n = Number(t.replace(',', '.'));
+        return Number.isNaN(n) ? null : n;
+      };
+      const dataToSave = {
+        ...formData,
+        certificate_number: certificateNumber,
+        net_weight_kg: numeric(formData.net_weight_kg),
+        content_percent: numeric(formData.content_percent),
+        value_usd: numeric(formData.value_usd),
+      };
 
       // Save to Supabase database
       const saved = await saveCertificate(dataToSave);
@@ -73,7 +110,7 @@ export function CertificateGenerator() {
       }
 
       // Generate QR code with certificate number for verification
-      const certificateUrl = `${window.location.origin}/verify?code=${certificateNumber}`;
+      const certificateUrl = `${window.location.origin}/verify.html?code=${certificateNumber}`;
 
       const qrCode = await QRCode.toDataURL(certificateUrl, {
         width: 400,
@@ -85,7 +122,12 @@ export function CertificateGenerator() {
       });
 
       setQrCodeUrl(qrCode);
-      setPreviewData({ ...dataToSave });
+      setPreviewData({
+        ...dataToSave,
+        net_weight_kg: String(dataToSave.net_weight_kg ?? ''),
+        content_percent: String(dataToSave.content_percent ?? ''),
+        value_usd: String(dataToSave.value_usd ?? ''),
+      });
       setSuccess(true);
     } catch (error) {
       console.error('Error creating certificate:', error);
@@ -94,6 +136,38 @@ export function CertificateGenerator() {
       setLoading(false);
     }
   };
+
+  const downloadFilledCongoPdf = async () => {
+    if (!previewData || !qrCodeUrl || !isCongoCertificate(previewData.origin_country)) return;
+    setDownloadingPdf(true);
+    try {
+      const details = {
+        ...previewData,
+        net_weight_kg: previewData.net_weight_kg ?? '',
+        content_percent: previewData.content_percent ?? '',
+        value_usd: previewData.value_usd ?? '',
+      };
+      const bytes = await buildFilledCongoCertificatePdf(details, qrCodeUrl);
+      const blob = new Blob([bytes as BlobPart], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.download = `certificat-cirgl-${previewData.certificate_number}.pdf`;
+      link.href = url;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error generating filled certificate PDF:', error);
+      const msg = error instanceof Error ? error.message : String(error);
+      alert(
+        'Error generating filled certificate PDF: ' + msg +
+        '\n\nIf it says the template could not be loaded (404), the site needs to be redeployed so /templates/congo-cirgl-template.pdf is available.'
+      );
+    } finally {
+      setDownloadingPdf(false);
+    }
+  };
+
+  const isCongoPreview = !!previewData && isCongoCertificate(previewData.origin_country);
 
   const downloadQRCode = () => {
     if (!qrCodeUrl || !previewData) return;
@@ -124,6 +198,17 @@ export function CertificateGenerator() {
       shipment_date: new Date().toISOString().split('T')[0],
       expiration_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       quantity: '1000',
+      net_weight_kg: '1000',
+      minerals: 'OR BRUT',
+      chemical_symbol: 'Au',
+      content_percent: '92.4',
+      metal_contained: 'Or fin',
+      value_usd: '1850000',
+      containers: 'CNT-0042 -> Dubai, UAE',
+      packing_type: 'Sacs scellés x12',
+      transiting: 'Kigali, Rwanda',
+      carrier_name: 'Trans Goma SARL',
+      issued_in: 'KINSHASA',
     });
   };
 
@@ -324,6 +409,84 @@ export function CertificateGenerator() {
                 />
               </div>
 
+              {formData.origin_country === 'RÉPUBLIQUE DÉMOCRATIQUE DU CONGO' && (
+                <div className="border border-emerald-200 bg-emerald-50 rounded-lg p-4 space-y-4">
+                  <p className="text-sm font-semibold text-emerald-800">
+                    Template details (CIRGL certificate PDF) — used only for RDC (Congo)
+                  </p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Produit / Minerals</label>
+                      <input type="text" name="minerals" value={formData.minerals} onChange={handleChange}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                        placeholder="OR BRUT" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Symbole chimique</label>
+                      <input type="text" name="chemical_symbol" value={formData.chemical_symbol} onChange={handleChange}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                        placeholder="Au" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Poids net (kg)</label>
+                      <input type="text" name="net_weight_kg" value={formData.net_weight_kg} onChange={handleChange}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                        placeholder="1000" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Teneur (%)</label>
+                      <input type="text" name="content_percent" value={formData.content_percent} onChange={handleChange}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                        placeholder="92.4" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Métal contenu</label>
+                      <input type="text" name="metal_contained" value={formData.metal_contained} onChange={handleChange}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                        placeholder="Or fin" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Valeur (USD)</label>
+                      <input type="text" name="value_usd" value={formData.value_usd} onChange={handleChange}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                        placeholder="1850000" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Conteneurs (de → à)</label>
+                    <input type="text" name="containers" value={formData.containers} onChange={handleChange}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                      placeholder="CNT-0042 -> Dubai, UAE" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Type d'emballage</label>
+                      <input type="text" name="packing_type" value={formData.packing_type} onChange={handleChange}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                        placeholder="Sacs scellés x12" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Transitant par</label>
+                      <input type="text" name="transiting" value={formData.transiting} onChange={handleChange}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                        placeholder="Kigali, Rwanda" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Transporteur</label>
+                      <input type="text" name="carrier_name" value={formData.carrier_name} onChange={handleChange}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                        placeholder="Trans Goma SARL" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Délivré à (issued in)</label>
+                      <input type="text" name="issued_in" value={formData.issued_in} onChange={handleChange}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                        placeholder="KINSHASA" />
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Quantity (kg) *
@@ -426,6 +589,21 @@ export function CertificateGenerator() {
                 </div>
 
                 <div className="space-y-3">
+                  {isCongoPreview && (
+                    <button
+                      onClick={downloadFilledCongoPdf}
+                      disabled={downloadingPdf}
+                      className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 flex items-center justify-center"
+                    >
+                      {downloadingPdf ? (
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      ) : (
+                        <FileText className="w-5 h-5 mr-2" />
+                      )}
+                      {downloadingPdf ? 'Preparing Certificate PDF...' : 'Download Filled Certificate (PDF)'}
+                    </button>
+                  )}
+
                   <button
                     onClick={downloadQRCode}
                     className="w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 flex items-center justify-center"

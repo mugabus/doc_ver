@@ -141,7 +141,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <div>
               <h4 className="text-white font-semibold mb-4">Certification</h4>
               <ul className="space-y-2 text-sm">
-                <li><Link to="/generate" className="text-gray-400 hover:text-white transition">Générer un Certificat</Link></li>
+                
                 <li><Link to="/verify" className="text-gray-400 hover:text-white transition">Vérifier un Certificat</Link></li>
                 <li><Link to="/about" className="text-gray-400 hover:text-white transition">Processus de Certification</Link></li>
               </ul>

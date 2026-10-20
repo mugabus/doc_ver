@@ -137,7 +137,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
 
   const handleDownloadQR = async (cert: Certificate) => {
     try {
-      const url = `${window.location.origin}/verify?code=${cert.certificate_number}`;
+      const url = `${window.location.origin}/verify.html?code=${cert.certificate_number}`;
       const dataUrl = await QRCode.toDataURL(url, { width: 400, margin: 2 });
       const link = document.createElement('a');
       link.download = `certificate-${cert.certificate_number}-qr.png`;

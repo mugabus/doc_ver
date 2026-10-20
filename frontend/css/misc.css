@@ -1,0 +1,45 @@
+
+.form-container {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: fit-content;
+  margin: auto;
+}
+
+.input-field {
+  flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.track-button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 2px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  height: 2em;
+  line-height: 2em;
+  transition: background-color 0.3s;
+}
+
+.track-button:hover {
+  background-color: #45a049;
+}
+
+@media (max-width: 600px) {
+  .form-container {
+    /* margin-top: 2em; */
+    width: 100%; /* Use full width on smaller screens */
+  }
+  .tracking {
+    margin-top: 2em;
+  }
+}

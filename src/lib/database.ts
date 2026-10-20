@@ -28,13 +28,25 @@ export function generateCertificateNumber(prefix: string = 'COD'): string {
 
 // Save a new certificate to the database
 export async function saveCertificate(data: Omit<Certificate, 'id' | 'created_at'>): Promise<Certificate | null> {
+  // Congo template detail columns — retried without them in case the
+  // detail migration has not been applied to the live database yet.
+  const CONGO_KEYS: (keyof Certificate)[] = [
+    'minerals', 'chemical_symbol', 'net_weight_kg', 'content_percent', 'metal_contained',
+    'value_usd', 'containers', 'packing_type', 'transiting', 'carrier_name', 'issued_in',
+  ];
   try {
     let lastError: unknown = null;
-    // Retry a few times on unique-constraint violations (duplicate certificate number)
+    let currentNumber = data.certificate_number;
+    // attempt 0: full payload
+    // attempt 1: without Congo detail columns (pre-migration fallback)
+    // attempt 2: same + freshly generated number (unique-constraint fallback)
     for (let attempt = 0; attempt < 3; attempt++) {
-      const payload = attempt === 0
-        ? data
-        : { ...data, certificate_number: generateCertificateNumber(getCountryPrefix(data.origin_country)) };
+      const payload: Record<string, unknown> = { ...data, certificate_number: currentNumber };
+      if (attempt >= 1) CONGO_KEYS.forEach((k) => delete payload[k]);
+      if (attempt >= 2) {
+        currentNumber = generateCertificateNumber(getCountryPrefix(data.origin_country));
+        payload.certificate_number = currentNumber;
+      }
 
       const { data: certificate, error } = await supabase
         .from('certificates')
@@ -47,11 +59,7 @@ export async function saveCertificate(data: Omit<Certificate, 'id' | 'created_at
       }
 
       lastError = error;
-      // 23505 = unique violation in Postgres
-      if ((error as { code?: string }).code !== '23505') {
-        break;
-      }
-    }
+   }
 
     console.error('Error saving certificate:', lastError);
     return null;

@@ -23,5 +23,17 @@ export interface Certificate {
   shipment_date: string;
   expiration_date: string;
   quantity: string;
+  // Congo/RDC template detail fields (nullable — see migration 20260213182500)
+  minerals?: string | null;
+  chemical_symbol?: string | null;
+  net_weight_kg?: string | number | null;
+  content_percent?: string | number | null;
+  metal_contained?: string | null;
+  value_usd?: string | number | null;
+  containers?: string | null;
+  packing_type?: string | null;
+  transiting?: string | null;
+  carrier_name?: string | null;
+  issued_in?: string | null;
   created_at: string;
 }

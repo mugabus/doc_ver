@@ -2,11 +2,6 @@ import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { CertificateGenerator } from './components/CertificateGenerator';
 import { CertificateViewer } from './components/CertificateViewer';
-import { Home } from './pages/Home';
-import { About } from './pages/About';
-import { Services } from './pages/Services';
-import { News } from './pages/News';
-import { Contact } from './pages/Contact';
 import { Dashboard } from './components/Dashboard';
 import { Login } from './components/Login';
 
@@ -29,10 +24,11 @@ function RequireAuth({ children }: { children: React.ReactNode }) {
 
 function LoginRoute() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogin = () => {
-    // Route to the page the user originally intended (e.g. /generate)
-    const action = new URLSearchParams(window.location.search).get('action');
+    // Route to the page the user originally intended (e.g. /generate).
+    const action = new URLSearchParams(location.search).get('action');
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
 
     if (isAuthenticated && action === 'generate') {
@@ -46,12 +42,12 @@ function LoginRoute() {
 }
 
 function DashboardRoute() {
-  const navigate = useNavigate();
-
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('userEmail');
-    navigate('/');
+    // Full navigation to the public site home page (frontend/index.html),
+    // which is now served at "/".
+    window.location.assign('/');
   };
 
   return <Dashboard onLogout={handleLogout} />;
@@ -62,25 +58,23 @@ function App() {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        {/* Public pages */}
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/news" element={<News />} />
-        <Route path="/contact" element={<Contact />} />
-
-        {/* Certificate verification (via QR scan or manual code) */}
-        <Route path="/verify" element={<CertificateViewer />} />
-        {/* Backwards-compatible redirects for old query-param URLs */}
-        <Route path="/index.html" element={<Navigate to="/" replace />} />
-
-        {/* Auth-protected pages */}
+        {/* Admin routes — same paths as the original SPA (/login, /dashboard,
+            /generate). They are served by frontend/admin.html; the dev server
+            (plugin in vite.config.ts) and vercel.json rewrites map these
+            extensionless paths to the admin entry file. */}
         <Route path="/generate" element={<RequireAuth><CertificateGenerator /></RequireAuth>} />
         <Route path="/dashboard" element={<RequireAuth><DashboardRoute /></RequireAuth>} />
         <Route path="/login" element={<LoginRoute />} />
 
+        {/* Certificate verification (via QR scan or manual code) */}
+        <Route path="/verify" element={<CertificateViewer />} />
+
+        {/* Opening the entry file directly lands on the dashboard */}
+        <Route path="/admin" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/admin.html" element={<Navigate to="/dashboard" replace />} />
+
         {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </BrowserRouter>
   );

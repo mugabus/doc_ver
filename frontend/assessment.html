@@ -1,0 +1,617 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="Official certification from the International Conference on the Great Lakes Region (ICGLR).">
+    <meta name="keywords" content="ICGLR certificate, ICGLR certification, conflict-free minerals, mineral certification Great Lakes Region, ICGLR certificate application, mineral traceability, due diligence minerals, responsible mineral sourcing, 3T minerals certification, tantalum tin tungsten gold certification, ICGLR member states, mineral export certification, chain of custody minerals, ICGLR compliance, Regional Certification Mechanism, conflict minerals certification, ethical mineral trade, ICGLR database, mineral audit certification, Great Lakes mineral exports, ICGLR certificate verification, tin tantalum tungsten gold, RINR certificate, mineral supply chain transparency">
+    <link rel="icon" type="image/png" href="/images/logo.png">
+    <meta name="author" content="ICGLR Certfication">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+    <link rel="shortcut icon" href="/images/favicon.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <title>ICGLR | Assessment</title>
+
+    <!-- CSS
+        ===============================================================-->
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <!-- Icons -->
+    <link rel="stylesheet" href="/css/all.min.css">
+    <!-- Lightbox -->
+    <link rel="stylesheet" href="/css/glightbox.css">
+    <!-- Animation -->
+    <link rel="stylesheet" href="/css/aos.css">
+    <!-- Swiper -->
+    <link rel="stylesheet" href="/css/swiper-bundle.min.css">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/css/main-css.css" id="theme">
+    <!-- Change Color Theme CSS -->
+    <link rel="stylesheet" href="/css/style-switcher.css">
+     <meta property="og:image" content="/images/logo.png">
+    <meta property="og:url" content="https://www.icglrcertification.org">
+    <script src="/js/handler.js" type="text/javascript"></script>
+    <script src="/js/inst.js" type="text/javascript"></script>
+    <link rel="canonical" href="https://icglrcertification.org/assessment">
+
+  </head>
+  <body>
+    <style>
+  .subscribe-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .subscribe-modal-content {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    animation: slideDown 0.3s ease;
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .subscribe-modal-header {
+    padding: 25px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    position: relative;
+  }
+
+  .success-icon {
+    font-size: 3rem;
+    color: #5cb85c;
+    margin-bottom: 15px;
+    display: block;
+  }
+
+  .subscribe-modal-header h3 {
+    margin: 0;
+    color: #333;
+    font-size: 1.5rem;
+  }
+
+  .close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .close-modal:hover {
+    color: #333;
+  }
+
+  .subscribe-modal-body {
+    padding: 25px;
+    color: #555;
+  }
+
+  .subscribe-modal-body p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+  }
+
+  .subscribe-modal-body strong {
+    color: #333;
+  }
+
+  #subscribedEmail {
+    color: #d9534f;
+    font-weight: 600;
+  }
+
+  .subscribe-modal-body ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .subscribe-modal-body ul li {
+    padding-left: 25px;
+    position: relative;
+    margin-bottom: 8px;
+  }
+
+  .subscribe-modal-body ul li:before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #5cb85c;
+    font-weight: bold;
+  }
+
+  .subscribe-modal-footer {
+    padding: 20px 25px;
+    text-align: center;
+    border-top: 1px solid #eee;
+  }
+
+  .btn-modal-ok {
+    background: #044a67;
+    border: none;
+    color: white;
+    padding: 12px 40px;
+    font-size: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+  }
+
+  .btn-modal-ok:hover {
+    background: #044a67;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(217, 83, 79, 0.4);
+  }
+</style>
+
+<div id="subscribeModal" class="subscribe-modal" style="display: none;">
+  <div class="subscribe-modal-content">
+    <div class="subscribe-modal-header">
+      <i class="fa-solid fa-check-circle success-icon"></i>
+      <h3>Subscription Successful!</h3>
+      <span class="close-modal" onclick="closeSubscribeModal()">×</span>
+    </div>
+    <div class="subscribe-modal-body">
+      <p><strong>Email:</strong> <span id="subscribedEmail"></span></p>
+      <p>Thank you for subscribing to the ICGLR newsletter!</p>
+      <p>You will receive updates about:</p>
+      <ul>
+        <li>Certification programs</li>
+        <li>Regional initiatives</li>
+        <li>Mineral trade news</li>
+      </ul>
+    </div>
+    <div class="subscribe-modal-footer">
+      <button class="btn-modal-ok" onclick="closeSubscribeModal()">OK</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function handleSubscribe(event) {
+    event.preventDefault();
+    const email = document.getElementById("subscribe-email").value;
+
+    if (email) {
+      // Show the modal with email
+      document.getElementById("subscribedEmail").textContent = email;
+      document.getElementById("subscribeModal").style.display = "flex";
+      
+      // Clear the input
+      document.getElementById("subscribe-email").value = "";
+    }
+
+    return false;
+  }
+
+  function closeSubscribeModal() {
+    document.getElementById("subscribeModal").style.display = "none";
+  }
+
+  // Close modal when clicking outside
+  window.addEventListener("click", function(event) {
+    const modal = document.getElementById("subscribeModal");
+    if (event.target === modal) {
+      closeSubscribeModal();
+    }
+  });
+
+  // Close modal with ESC key
+  window.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+      closeSubscribeModal();
+    }
+  });
+</script>
+    <!-- PRELOADER
+        ===============================================================-->
+    <div id="preloader">
+      <div class="cssload-container">
+        <img src="/images/logo.png" width="100" alt="Logo">
+        <div class="cssload-double-torus mt-5"></div>
+      </div>
+    </div>
+
+    <!-- NAVBAR
+        ===============================================================-->
+    <nav class="navbar position-fixed fixed-top navbar-light w-100 navbar-expand-lg">
+      <div class="container">
+        <!-- Change your logo here -->
+        <a class="navbar-brand" href="index.html"><img src="/images/logo.png" alt="Logo"></a>
+        <button class="navbar-toggler" type="button" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"><i class="fa-solid fa-bars"></i></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="news.html">News</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="verify.html">Verify ICGLR</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="assessment.html">Assessment</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="apply.html">Apply for ICGLR</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="compliance.html">Compliance</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- BREADCRUMB
+        ===============================================================-->
+    <div class="breadcrumb-container">
+      <div class="container">
+        <ol class="breadcrumb justify-content-end">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active">
+            Assessment <i class="fa-solid fa-arrow-down ml5"></i>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- TRACK
+        ===============================================================-->
+    <section class="bg-white">
+      <div class="container">
+        <div class="row" data-aos="fade-in">
+          <div class="col-md-12">
+            <div class="title">
+              <h2>Assessment</h2>
+            </div>
+          </div>
+          <style>
+            .icglr-container {
+              max-width: 600px;
+              margin: 40px auto;
+            }
+
+            .icglr-card {
+              background: #fff;
+              border-radius: 10px;
+              padding: 25px;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            }
+
+            .icglr-title {
+              margin-bottom: 25px;
+              font-size: 1.5rem;
+              font-weight: 600;
+            }
+
+            .icglr-field {
+              margin-bottom: 18px;
+              display: flex;
+              flex-direction: column;
+            }
+
+            .icglr-label {
+              margin-bottom: 6px;
+              font-weight: 600;
+            }
+
+            .icglr-input {
+              border: 1px solid #d0d0d0;
+              padding: 10px 12px;
+              border-radius: 6px;
+              font-size: 15px;
+            }
+
+            .icglr-submit {
+              background: #1e8bc3;
+              width: 100%;
+              color: white;
+              padding: 10px 16px;
+              border: none;
+              border-radius: 6px;
+              font-size: 16px;
+              cursor: pointer;
+              text-transform: uppercase;
+            
+            }
+
+            .icglr-submit:hover {
+              background: #044a67;
+            }
+            .icglr-container,
+            .icglr-container * {
+            }
+
+            .icglr-container {
+              max-width: 600px;
+              margin: 40px auto;
+            }
+
+            .icglr-card {
+              background: #fff;
+              border-radius: 10px;
+              padding: 25px;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            }
+
+            .icglr-title {
+              margin-bottom: 25px;
+              font-size: 1.5rem;
+              font-weight: 600;
+            }
+
+            .icglr-field {
+              margin-bottom: 18px;
+              display: flex;
+              flex-direction: column;
+            }
+
+            .icglr-label {
+              margin-bottom: 6px;
+              font-weight: 600;
+            }
+
+            .icglr-input {
+              border: 1px solid #d0d0d0;
+              padding: 10px 12px;
+              border-radius: 6px;
+              font-size: 15px;
+            }
+
+            .icglr-submit:hover {
+              background: #075ad1;
+            }
+
+            .icglr-input {
+              border: 1px solid #d0d0d0;
+              padding: 8px 12px;
+              border-radius: 5px;
+              font-size: 14px;
+              height: 38px;
+              width: 100%;
+              box-sizing: border-box;
+            }
+
+            .icglr-input[type="number"],
+            .icglr-input[type="text"],
+            select.icglr-input {
+              height: 38px;
+            }
+
+            .icglr-submit {
+              background: #044a67;
+              color: white;
+              padding: 8px 20px;
+              border: none;
+              border-radius: 5px;
+              font-size: 14px;
+              cursor: pointer;
+              height: 38px;
+              font-weight: 600;
+              line-height: 11px;
+            }
+          </style>
+
+          <div class="icglr-container">
+            <div class="icglr-card">
+              <div class="icglr-card-body">
+                <h3 class="icglr-title">Lookup ICGLR Assessment</h3>
+                
+                <form id="assessmentLookupForm" method="get" action="assessment.html" class="icglr-form">
+                  <div class="icglr-field">
+                    <label class="icglr-label" for="assessmentCode">Enter Assessment ID</label>
+                    <input type="text" id="assessmentCode" name="code" class="icglr-input" placeholder="ICGLR 1234567-2021" autocomplete="off" required="">
+                  </div>
+
+                  <button class="icglr-submit btn-primary" type="submit">SEARCH</button>
+                </form>
+                <!-- Lookup result (filled by js/backend.js) -->
+                <div id="assessmentResult" aria-live="polite"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="icglr-container">
+            <div class="icglr-card">
+              <div class="icglr-card-body">
+                <h3 class="icglr-title">Apply for ICGLR Assessment</h3>
+                
+                <form id="assessmentApplyForm" method="button" class="icglr-form">
+                  <div class="icglr-field">
+                    <label class="icglr-label" for="assessmentCompanyCode">Enter Company ID</label>
+                    <input type="text" id="assessmentCompanyCode" name="companycode" class="icglr-input" placeholder="1234567-2021" required="">
+                  </div>
+
+                  <!-- No matching backend endpoint yet: show the application
+                       instructions popup (js/inst.js) instead of a dead POST. -->
+                  <button class="icglr-submit" type="button" onclick="openApplyPopup()">Apply</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /row -->
+      </div>
+      <!-- /container -->
+    </section>
+    <!-- /section -->
+
+    <!-- FOOTER
+        ===============================================================-->
+    <footer>
+      <div class="footer-top">
+        <div class="container">
+          <div class="row">
+            <div class="footer-widget col-sm-12 col-md-12 col-lg-4 first">
+              <h3>About us</h3>
+              <p>
+                <a href="index.html">ICGLR</a> stands for the
+                International Conference on the Great Lakes Region. It's a
+                highly regarded inter-governmental organization that focuses on
+                promoting responsible mineral trade and implementing
+                comprehensive certification standards across member states in
+                the African Great Lakes Region.
+              </p>
+              <ul class="list-unstyled">
+                <li>
+                  <div>
+                    <strong style="color: #fff; display: block; margin-bottom: 5px">Certificates Inquiry</strong>
+                    <a href="/cdn-cgi/l/email-protection#2841464e4768414b4f445a4b4d5a5c414e414b495c41474606475a4f"><span class="__cf_email__" data-cfemail="1c75727a735c757f7b706e7f796e68757a757f7d6875737232736e7b">[email&nbsp;protected]</span></a>
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <strong style="color: #fff; display: block; margin-bottom: 5px">Technical Support</strong>
+                    <a href="/cdn-cgi/l/email-protection#f0838580809f8284b09993979c8293958284999699939184999f9ede9f8297"><span class="__cf_email__" data-cfemail="65161015150a1711250c06020917060017110c030c0604110c0a0b4b0a1702">[email&nbsp;protected]</span></a>
+                  </div>
+                </li>
+              </ul>
+              <div class="d-block d-lg-none pt20"></div>
+            </div>
+            <div class="footer-widget col-sm-6 col-md-6 col-lg-4">
+              <h3>Useful Links</h3>
+              <ul class="useful-links">
+                <li>
+                  <a href="verify.html">Verify Certificate</a>
+                </li>
+                <li>
+                  <a href="assessment.html">Assessment</a>
+                </li>
+                <li>
+                  <a href="apply.html">Apply for Certification</a>
+                </li>
+                <li>
+                  <a href="compliance.html">Compliance Standards</a>
+                </li>
+                <li>
+                  <a href="contact.html">Contact Us</a>
+                </li>
+                <li>
+                  <a href="/features">Features</a>
+                </li>
+                
+              </ul>
+              <div class="d-block d-lg-none pt20"></div>
+            </div>
+            <div class="footer-widget col-sm-6 col-md-6 col-lg-4">
+              <h3>Newsletter Registration</h3>
+              <p>
+                Subscribe today to receive the latest
+                <strong>ICGLR</strong> news, certification updates, and mineral
+                trade insights via email. You may unsubscribe from this service
+                at any time.
+              </p>
+              <!-- Newsletter Form-->
+              <form method="post" onsubmit="return handleSubscribe(event);">
+                <div class="input-group newsletter">
+                  <label class="sr-only" for="subscribe-email">Enter your email...</label>
+                  <input type="email" class="form-control" id="subscribe-email" placeholder="Enter your email..." required="">
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn">
+                      <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                  </span>
+                </div>
+              </form>
+              <p class="newsletter-desc">
+                <strong>No spam guaranteed:</strong> We respect your privacy and
+                will only send you relevant updates about ICGLR certification
+                programs and regional initiatives.
+              </p>
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6 credits">
+              <p>
+                © ICGLR <span id="currentYear">2026</span>. All Rights Reserved.
+              </p>
+            </div>
+
+            <script data-cfasync="false" src="/js/email-decode.min.js"></script><script>
+              // Automatically update the year
+              document.getElementById("currentYear").textContent =
+                new Date().getFullYear();
+            </script>
+          </div>
+        </div>
+      </div>
+      <!--WhatsApp Button-->
+      <a href="#" class="whatsappButton" id="whatsappButton"><i class="fa-brands fa-whatsapp"></i></a>
+      <!--back to top-->
+      <a href="#" class="scrollToTop" id="scrollToTop"><i class="fa-solid fa-angle-up"></i></a>
+    </footer>
+
+    <!-- JAVASCRIPT
+        ===============================================================-->
+    <!-- Bootstrap pooper-->
+    <script src="/js/popper.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/js/bootstrap.min.js"></script>
+    <!-- Glightbox -->
+    <script src="/js/glightbox.min.js"></script>
+    <!-- Swiper -->
+    <script src="/js/swiper-bundle.min.js"></script>
+    <!-- Animation -->
+    <script src="/js/aos.js"></script>
+    <!-- Contact Form -->
+    <script src="form-validation.html"></script>
+    <!-- Main -->
+    <script src="/js/main.js"></script>
+    <!-- Change Color Theme JS -->
+    <script src="/js/style-switcher.js"></script>
+    <!-- Backend (Supabase) integration: assessment lookup -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/js/config.js"></script>
+    <script src="/js/backend.js"></script>
+  
+
+  
+
+</body></html>

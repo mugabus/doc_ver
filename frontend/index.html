@@ -1,0 +1,1239 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="Official certification from the International Conference on the Great Lakes Region (ICGLR).">
+    <meta name="keywords" content="ICGLR certificate, ICGLR certification, conflict-free minerals, mineral certification Great Lakes Region, ICGLR certificate application, mineral traceability, due diligence minerals, responsible mineral sourcing, 3T minerals certification, tantalum tin tungsten gold certification, ICGLR member states, mineral export certification, chain of custody minerals, ICGLR compliance, Regional Certification Mechanism, conflict minerals certification, ethical mineral trade, ICGLR database, mineral audit certification, Great Lakes mineral exports, ICGLR certificate verification, tin tantalum tungsten gold, RINR certificate, mineral supply chain transparency">
+    
+    <meta name="author" content="ICGLR Certfication">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+    <link rel="shortcut icon" href="/images/favicon.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <title>ICGLR | Home</title>
+
+    <!-- CSS
+        ===============================================================-->
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="/css/all.min.css">
+    <!-- Lightbox -->
+    <link rel="stylesheet" href="/css/glightbox.css">
+    <!-- Animation -->
+    <link rel="stylesheet" href="/css/aos.css">
+    <!-- Swiper -->
+    <link rel="stylesheet" href="/css/swiper-bundle.min.css">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/css/main-css.css" id="theme">
+    <!-- Change Color Theme CSS -->
+    <link rel="stylesheet" href="/css/style-switcher.css">
+
+    <link rel="stylesheet" href="/css/map.css">
+    <link rel="stylesheet" href="/css/misc.css">
+     <meta property="og:image" content="/images/logo_1.png">
+    <meta property="og:url" content="https://www.icglrcertification.org">
+    <script src="/js/handler.js" type="text/javascript"></script>
+    <script src="/js/inst.js" type="text/javascript"></script>
+    <link rel="canonical" href="https://icglrcertification.org/">
+
+  </head>
+  <body>
+    <style>
+  .subscribe-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .subscribe-modal-content {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    animation: slideDown 0.3s ease;
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .subscribe-modal-header {
+    padding: 25px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    position: relative;
+  }
+
+  .success-icon {
+    font-size: 3rem;
+    color: #5cb85c;
+    margin-bottom: 15px;
+    display: block;
+  }
+
+  .subscribe-modal-header h3 {
+    margin: 0;
+    color: #333;
+    font-size: 1.5rem;
+  }
+
+  .close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .close-modal:hover {
+    color: #333;
+  }
+
+  .subscribe-modal-body {
+    padding: 25px;
+    color: #555;
+  }
+
+  .subscribe-modal-body p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+  }
+
+  .subscribe-modal-body strong {
+    color: #333;
+  }
+
+  #subscribedEmail {
+    color: #d9534f;
+    font-weight: 600;
+  }
+
+  .subscribe-modal-body ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .subscribe-modal-body ul li {
+    padding-left: 25px;
+    position: relative;
+    margin-bottom: 8px;
+  }
+
+  .subscribe-modal-body ul li:before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #5cb85c;
+    font-weight: bold;
+  }
+
+  .subscribe-modal-footer {
+    padding: 20px 25px;
+    text-align: center;
+    border-top: 1px solid #eee;
+  }
+
+  .btn-modal-ok {
+    background: #044a67;
+    border: none;
+    color: white;
+    padding: 12px 40px;
+    font-size: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+  }
+
+  .btn-modal-ok:hover {
+    background: #044a67;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(217, 83, 79, 0.4);
+  }
+</style>
+
+<div id="subscribeModal" class="subscribe-modal" style="display: none;">
+  <div class="subscribe-modal-content">
+    <div class="subscribe-modal-header">
+      <i class="fa-solid fa-check-circle success-icon"></i>
+      <h3>Subscription Successful!</h3>
+      <span class="close-modal" onclick="closeSubscribeModal()">×</span>
+    </div>
+    <div class="subscribe-modal-body">
+      <p><strong>Email:</strong> <span id="subscribedEmail"></span></p>
+      <p>Thank you for subscribing to the ICGLR newsletter!</p>
+      <p>You will receive updates about:</p>
+      <ul>
+        <li>Certification programs</li>
+        <li>Regional initiatives</li>
+        <li>Mineral trade news</li>
+      </ul>
+    </div>
+    <div class="subscribe-modal-footer">
+      <button class="btn-modal-ok" onclick="closeSubscribeModal()">OK</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function handleSubscribe(event) {
+    event.preventDefault();
+    const email = document.getElementById("subscribe-email").value;
+
+    if (email) {
+      // Show the modal with email
+      document.getElementById("subscribedEmail").textContent = email;
+      document.getElementById("subscribeModal").style.display = "flex";
+      
+      // Clear the input
+      document.getElementById("subscribe-email").value = "";
+    }
+
+    return false;
+  }
+
+  function closeSubscribeModal() {
+    document.getElementById("subscribeModal").style.display = "none";
+  }
+
+  // Close modal when clicking outside
+  window.addEventListener("click", function(event) {
+    const modal = document.getElementById("subscribeModal");
+    if (event.target === modal) {
+      closeSubscribeModal();
+    }
+  });
+
+  // Close modal with ESC key
+  window.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+      closeSubscribeModal();
+    }
+  });
+</script>
+    <!-- PRELOADER
+        ===============================================================-->
+    <div id="preloader">
+      <div class="cssload-container">
+        <img src="/images/logo_1.png" width="100" alt="Logo">
+        <div class="cssload-double-torus mt-5"></div>
+      </div>
+    </div>
+
+    <!-- NAVBAR
+        ===============================================================-->
+    <nav class="navbar position-fixed fixed-top navbar-light w-100 navbar-expand-lg">
+      <div class="container">
+        <!-- Change your logo here -->
+        <a class="navbar-brand" href="index.html"><img src="/images/logo.png" alt="Logo"></a>
+        <button class="navbar-toggler" type="button" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"><i class="fa-solid fa-bars"></i></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="news.html">News</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="verify.html">Verify ICGLR</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="assessment.html">Assessment</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="apply.html">Apply for ICGLR</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="compliance.html">Compliance</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- SLIDER
+        ===============================================================-->
+    <!-- FLEXISLIDER -->
+    <header class="container-fluid intro-slider">
+      <div class="bg-slider-wrapper">
+        <div id="main-slider" class="flexslider bg-slider">
+          <div class="swiper swiper-container">
+            <ul class="slides swiper-wrapper">
+              <li class="swiper-slide slide slide-1">
+                <div class="push-text-slide"></div>
+                <section class="home-promo">
+                  <div class="text-center">
+                    <h2 class="titlepro">
+                      <span class="middle">ICGLR <strong>Certification</strong></span>
+                      <span class="bottom">International Conference on the Great Lakes Region -
+                        Ensuring Responsible Mineral Trade</span>
+                    </h2>
+                  </div>
+                </section>
+              </li>
+              <li class="swiper-slide slide slide-2">
+                <div class="push-text-slide"></div>
+                <section class="home-promo">
+                  <div class="text-center">
+                    <h2 class="titlepro">
+                      <span class="upper">Regional Standards &amp; Compliance</span>
+                      <span class="middle">Transparent <strong>Certification</strong></span>
+                      <span class="bottom">Promoting ethical mining practices across the Great
+                        Lakes Region</span>
+                    </h2>
+                    <a href="compliance.html" class="btn btn-transparent">
+                      <i class="fa-solid fa-certificate"></i> Get Certified
+                    </a>
+                  </div>
+                </section>
+              </li>
+              <li class="swiper-slide slide slide-3">
+                <div class="push-text-slide"></div>
+                <section class="home-promo">
+                  <div class="text-center">
+                    <h2 class="titlepro">
+                      <span class="upper">Our certification system is</span>
+                      <span class="middle"><strong>{</strong>Comprehensive<strong>}</strong></span>
+                      <span class="bottom">Track, verify, and audit mineral supply chains with
+                        confidence</span>
+                    </h2>
+                    <a href="verify.html" class="btn btn-transparent">
+                      <i class="fa-solid fa-search"></i> Verify Certificate
+                    </a>
+                  </div>
+                </section>
+              </li>
+            </ul>
+          </div>
+
+          <button type="button" aria-label="Previous" class="main-slider-button-prev swiper-button-prev"></button>
+          <button type="button" aria-label="Next" class="main-slider-button-next swiper-button-next"></button>
+        </div>
+        <div class="main-slider-pagination"></div>
+      </div>
+    </header>
+
+    <!-- LOOKUP -->
+    <section class="bg-gray">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="title">
+              <h2>LOOKUP certificate / Assessment</h2>
+            </div>
+          </div>
+        </div>
+        
+        <form class="form-container ddsmoothmenu tracking" method="post">
+          <input type="hidden" name="csrfmiddlewaretoken" value="ClQLjwcZlX7yB7d7dJHgdFc8k1E812sana5WhVuqqwqbpVaVoC6gQhD8QUV6NkRV">
+          <fieldset>
+            <div class="row g-3">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <div class="inner-addon left-addon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input id="tracking" name="tracking_code" type="text" class="form-control required" required="" placeholder="Enter Certificate or Assessment Number" style="width: 278px;">
+<script>
+  const input = document.getElementById("tracking");
+  const span = document.createElement("span");
+  span.style.position = "absolute";
+  span.style.visibility = "hidden";
+  span.style.whiteSpace = "pre";
+  span.style.font = getComputedStyle(input).font;
+  document.body.appendChild(span);
+
+  const resize = () => {
+    span.textContent = input.value || input.placeholder;
+    const newWidth = span.offsetWidth + 40; // Reduced from 100
+    const maxWidth = window.innerWidth - 80; // Max width based on screen
+    const minWidth = 200; // Minimum width
+    
+    input.style.width = Math.min(Math.max(newWidth, minWidth), maxWidth) + "px";
+  };
+
+  resize();
+  input.addEventListener("input", resize);
+  window.addEventListener("resize", resize); // Adjust on screen resize
+</script>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <button type="submit" class="btn btn-primary-corp-big btn-secondary" style="color: blue; z-index: 10;">
+            Lookup
+          </button>
+        </form>
+        <!-- /row -->
+      </div>
+      <!-- /container -->
+    </section><span style="position: absolute; visibility: hidden; white-space: pre; font: 13.3333px Arial;">Enter Certificate or Assessment Number</span>
+    <!-- /section lookup -->
+
+    <!-- HOME CONTENT
+        ===============================================================-->
+    <!-- PRINCIPAL SERVICES -->
+    <section class="bg-white">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-6 col-md-3 text-center home-icons">
+            <i class="fa-solid" data-aos="fade-up" data-aos-delay="20"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <mask id="circleFlagsEastAfricanFederation0">
+                  <circle cx="256" cy="256" r="256" fill="#fff"></circle>
+                </mask>
+                <g mask="url(#circleFlagsEastAfricanFederation0)">
+                  <path fill="#338af3" d="M0 0h512v141l-64 115l64 115v141H0V371l64-115L0 141Z"></path>
+                  <path fill="#eee" d="M0 141h512v23l-256 16L0 164Z"></path>
+                  <path fill="#333" d="M0 164h512v38l-256 16L0 202Z"></path>
+                  <path fill="#6da544" d="m0 220l256 16l256-16v-18H0Z"></path>
+                  <path fill="#eee" d="M0 371h512v-23l-256-16L0 348Z"></path>
+                  <path fill="#ff9811" d="M0 348h512v-38l-256-16L0 310Z"></path>
+                  <path fill="#6da544" d="m0 292l256-16l256 16v18H0Z"></path>
+                  <path fill="#ffda44" d="M0 220h512v72H0z"></path>
+                  <circle cx="256" cy="248" r="64" fill="#eee"></circle>
+                  <path fill="#eee" d="m178 301l78-29l78 29v27H178Z"></path>
+                </g>
+              </svg>
+            </i>
+            <div>
+              <div>
+                <h4>Regional Standards</h4>
+                <h5>
+                  The aim here is to create a conducive environment for
+                  cooperation among member states while also ensuring the
+                  protection and well-being of the people living in this region.
+                </h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-3 text-center home-icons">
+            <i class="fa-solid" data-aos="fade-up" data-aos-delay="40"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 22H6c-1.886 0-2.828 0-3.414-.586S2 19.886 2 18v-2c0-1.886 0-2.828.586-3.414S4.114 12 6 12h2c1.886 0 2.828 0 3.414.586S12 14.114 12 16v2c0 1.886 0 2.828-.586 3.414S9.886 22 8 22m-2-7h2M18 2c-2.21 0-4 1.809-4 4.04c0 1.276.5 2.268 1.5 3.154c.705.625 1.559 1.663 2.071 2.503c.246.404.594.404.858 0c.538-.824 1.366-1.878 2.071-2.502c1-.887 1.5-1.879 1.5-3.155C22 3.81 20.21 2 18 2m0 13v3c0 1.886 0 2.828-.469 3.414c-.447.56-1.155.585-2.531.586m3.008-16h-.01" color="currentColor"></path>
+              </svg>
+            </i>
+            <div>
+              <h4>Regional Tracking</h4>
+              <h5>
+                Monitor and track certification activities across different
+                regions with real-time updates and comprehensive oversight.
+              </h5>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-3 text-center home-icons">
+            <i class="fa-solid" data-aos="fade-up" data-aos-delay="60"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                <path fill="currentColor" d="M16 3c-.625 0-1.246.21-1.781.594L12.563 4.75L10.655 5h-.031l-.031.031A3.394 3.394 0 0 0 8.03 7.594L8 7.625v.031l-.25 1.938l-1.156 1.5l-.032.031v.031c-.699 1.117-.73 2.559.032 3.625l1.187 1.656l.313 1.72l-3.219 4.905l-1.031 1.532h4.781l1.156 2.687L10.5 29l1.031-1.563l3.156-4.75c.848.348 1.805.38 2.626 0l3.156 4.75L21.5 29l.719-1.719l1.156-2.687h4.781l-1.031-1.532L24 18.313l.25-1.875l1.156-1.656l.032-.031v-.031c.699-1.117.73-2.528-.032-3.594L24.25 9.469l-.375-1.875h.031c-.004-.024-.027-.04-.031-.063c-.18-1.308-1.215-2.37-2.531-2.531h-.032l-1.875-.25l-1.656-1.156A3.074 3.074 0 0 0 16 3zm0 2.031c.23 0 .457.07.625.188L18.406 6.5l.219.156l.25.032L21.063 7h.03c.45.05.762.363.813.813v.062l.407 2.219l.03.219l.157.187l1.281 1.781c.239.332.27.895-.031 1.375l-1.406 1.969l-.032.25L22 18.063v.03a.994.994 0 0 1-.156.438l-.063.032v.03a.88.88 0 0 1-.593.313h-.063l-2.281.407l-.25.03l-.188.157l-1.781 1.281c-.332.239-.926.27-1.406-.031l-1.625-1.25l-.188-.156l-.281-.032L10.937 19h-.03a.885.885 0 0 1-.688-.438a.99.99 0 0 1-.125-.375v-.062l-.406-2.281l-.032-.25l-.156-.188l-1.281-1.781c-.239-.332-.27-.926.031-1.406l1.25-1.625l.156-.188l.031-.281l.282-2.094c.004-.015.027-.015.031-.031a1.394 1.394 0 0 1 1-1c.016-.004.016-.027.031-.031l2.094-.282l.25-.03l.219-.157l1.781-1.281c.168-.117.395-.188.625-.188zm6.906 15.219l1.532 2.344H22.03l-.25.625l-.687 1.593l-2.125-3.25l.468-.343l1.97-.344v.031c.023-.004.038-.027.062-.031a2.97 2.97 0 0 0 1.437-.625zm-13.812.031a2.85 2.85 0 0 0 1.562.719h.031l1.907.25l.437.344l-2.125 3.218l-.687-1.593l-.25-.625H7.563z"></path>
+              </svg>
+            </i>
+            <div>
+              <h4>Certification Manual + Appendices</h4>
+              <h5>
+                Access comprehensive certification documentation including
+                detailed manuals and supporting appendices for complete
+                guidance.
+              </h5>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-3 text-center home-icons">
+            <i class="fa-solid" data-aos="fade-up" data-aos-delay="80"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                <path fill="currentColor" d="M6 16h6v2H6zm0-4h10v2H6zm0-4h10v2H6z"></path>
+                <path fill="currentColor" d="M14 26H4V6h24v10h2V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h10Z"></path>
+                <path fill="currentColor" d="M22 25.59L19.41 23L18 24.41l4 4l8-8L28.59 19L22 25.59z"></path>
+              </svg>
+            </i>
+            <div>
+              <h4>Certificate Verification</h4>
+              <h5>
+                Verify the authenticity of certificates quickly and securely
+                with our digital verification system.
+              </h5>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-3 text-center home-icons">
+            <i class="fa-solid" data-aos="fade-up" data-aos-delay="80"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m20.893 13.393-1.135-1.135a2.252 2.252 0 0 1-.421-.585l-1.08-2.16a.414.414 0 0 0-.663-.107.827.827 0 0 1-.812.21l-1.273-.363a.89.89 0 0 0-.738 1.595l.587.39c.59.395.674 1.23.172 1.732l-.2.2c-.212.212-.33.498-.33.796v.41c0 .409-.11.809-.32 1.158l-1.315 2.191a2.11 2.11 0 0 1-1.81 1.025 1.055 1.055 0 0 1-1.055-1.055v-1.172c0-.92-.56-1.747-1.414-2.089l-.655-.261a2.25 2.25 0 0 1-1.383-2.46l.007-.042a2.25 2.25 0 0 1 .29-.787l.09-.15a2.25 2.25 0 0 1 2.37-1.048l1.178.236a1.125 1.125 0 0 0 1.302-.795l.208-.73a1.125 1.125 0 0 0-.578-1.315l-.665-.332-.091.091a2.25 2.25 0 0 1-1.591.659h-.18c-.249 0-.487.1-.662.274a.931.931 0 0 1-1.458-1.137l1.411-2.353a2.25 2.25 0 0 0 .286-.76m11.928 9.869A9 9 0 0 0 8.965 3.525m11.928 9.868A9 9 0 1 1 8.965 3.525"></path>
+              </svg>
+            </i>
+            <div>
+              <h4>Third Party Audit Standards</h4>
+              <h5>
+                Basically, it's like having an independent watchdog checking up
+                on these organizations to make sure they're playing by the
+                rules.
+              </h5>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-3 text-center home-icons">
+            <i class="fa-solid" data-aos="fade-up" data-aos-delay="80"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14">
+                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5.5 4.054a1.5 1.5 0 1 1 1.5 1.5v.5m0 2.062a.25.25 0 0 1 0-.5m0 .5a.25.25 0 0 0 0-.5"></path>
+                  <path d="M12.5 13.5H3a1.5 1.5 0 1 1 0-3h8.5a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1H3a1.5 1.5 0 0 0-1.5 1.46v10m10-1.46v3"></path>
+                </g>
+              </svg>
+            </i>
+            <div>
+              <h4>MS Standards</h4>
+              <h5>
+                By implementing these standards, mining companies are held
+                accountable for their actions and required to adhere to ethical
+                guidelines that prioritize worker safety.
+              </h5>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-3 text-center home-icons">
+            <i class="fa-solid" data-aos="fade-up" data-aos-delay="80"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <g fill="none">
+                  <path fill="#e3e3e3" d="M18.894 4.826c.18.18.28.423.28.676v16.542a.956.956 0 0 1-.957.956H1.957A.956.956 0 0 1 1 22.044V1.957A.957.957 0 0 1 1.957 1h12.715a.96.96 0 0 1 .676.277z"></path>
+                  <path fill="#fff" d="m17.09 3.02l-1.742-1.743A.96.96 0 0 0 14.672 1H1.957A.957.957 0 0 0 1 1.957v17.152z"></path>
+                  <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round" d="M8.652 23H1.957A.956.956 0 0 1 1 22.044V1.957A.957.957 0 0 1 1.957 1h12.715c.253 0 .495.099.676.276l3.546 3.55c.18.18.28.423.28.676v3.15M12.478 22.56H23"></path>
+                  <path fill="#ff808c" stroke="#191919" stroke-linecap="round" stroke-linejoin="round" d="M21.087 17.97h-1.913v-3.225a2.244 2.244 0 0 0 .834-2.562a2.425 2.425 0 0 0-4.538 0a2.244 2.244 0 0 0 .834 2.562v3.225h-1.913a1.876 1.876 0 0 0-1.913 1.836v.918H23v-.918a1.877 1.877 0 0 0-1.913-1.836"></path>
+                </g>
+              </svg>
+            </i>
+            <div>
+              <h4>Mineral Chain Auditor</h4>
+              <h5>
+                By examining factors like transparency, traceability, and
+                compliance with international standards, it helps identify any
+                potential risks or loopholes that could contribute to
+                conflicting mineral sourcing practices.
+              </h5>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-3 text-center home-icons">
+            <i class="fa-solid" data-aos="fade-up" data-aos-delay="80"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                <g fill="currentColor">
+                  <path fill-rule="evenodd" d="M7 3.207V5h1V3.207l2.647 2.647l.707-.708l-3.5-3.5h-.707l-3.5 3.5l.707.708z" clip-rule="evenodd"></path>
+                  <path d="m1.5 9l-.5.5v5l.5.5h12l.5-.5v-5l-.5-.5H9.95a2.5 2.5 0 0 1-4.9 0zm9.163 1H13v4H2v-4h2.337a3.5 3.5 0 0 0 6.326 0M7 6h1v1H7zm0 2h1v1H7z"></path>
+                </g>
+              </svg>
+            </i>
+            <div>
+              <h4>Apply for Certificate</h4>
+              <h5>
+                Submit your certification application online with our
+                streamlined digital process for faster approval.
+              </h5>
+            </div>
+          </div>
+        </div>
+        <!-- /row -->
+      </div>
+      <!-- /container -->
+    </section>
+    <!-- /section Principal Services -->
+
+    <!-- ABOUT US -->
+    <section class="bg-gray">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="title">
+              <h2>About Us</h2>
+            </div>
+          </div>
+          <!-- VIDEO -->
+          <div class="col-sm-12 col-lg-6">
+            <figure class="position-relative">
+              <img src="/images/specimen.png" class="img-fluid" alt="About us thumbnail">
+            </figure>
+            <div class="d-block d-lg-none pt5"></div>
+          </div>
+          <!-- DESCRIPTION -->
+          <div class="col-sm-12 col-lg-6">
+            <div class="blognews">
+              <a href="about.html" class="mb20">
+                <div class="item-img-wrap">
+                  <img src="/images/1920x600-1.webp" class="img-fluid" alt="template">
+                  <div class="item-img-overlay">
+                    <div class="about">
+                      <span class="btn btn-transparent-sm"><i class="fa-solid fa-plus"></i> Read more</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <p>
+              <strong>The ICGLR Regional Certification Mechanism</strong> was
+              established to promote responsible mineral trade in the Great
+              Lakes Region. Our comprehensive framework ensures transparency,
+              traceability, and compliance with international standards
+              throughout the mineral supply chain. By implementing rigorous
+              auditing procedures and certification protocols, we work to
+              eliminate conflict minerals and promote ethical mining practices
+              that protect both workers and communities
+              <a href="about.html">across member states</a>.
+            </p>
+          </div>
+        </div>
+        <!-- /row -->
+      </div>
+      <!-- /container -->
+    </section>
+    <!-- /section About Us -->
+
+    <!-- PROGRAMS -->
+    <section class="bg-white">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="title-r">
+              <h2>Programs</h2>
+            </div>
+          </div>
+          <div class="col-md-12 swiper-slider">
+            <div class="swiper home-carousel" id="news">
+              <div class="swiper-wrapper">
+                <!-- Program 1 -->
+                <div class="swiper-slide">
+                  <article class="blognews">
+                    <h4>
+                      <a href="blogpost.html">Peace and Security</a>
+                    </h4>
+                    <p>
+                      Promoting regional stability and conflict resolution
+                      through collaborative frameworks. Addressing security
+                      challenges and fostering peaceful coexistence among member
+                      states to create a safe environment for sustainable
+                      development and prosperity.
+                    </p>
+                    <p class="author">
+                      <i class="fa-solid fa-calendar"></i>
+                      JAN 23, 2026 <span>/</span> BY
+                      <a href="#!"><strong>ICGLR</strong></a> <span>/</span>
+                      <a href="blogpost.html" data-placement="right" title="" data-original-title="Read more" class="corp-tooltip" data-bs-toggle="tooltip"><i class="fa-solid fa-plus-square"></i></a>
+                    </p>
+                  </article>
+                </div>
+
+                <!-- Program 2 -->
+                <div class="swiper-slide">
+                  <article class="blognews">
+                    <h4>
+                      <a href="blogpost.html">Democracy and Good Governance</a>
+                    </h4>
+                    <p>
+                      Strengthening democratic institutions, promoting
+                      transparency, accountability, and the rule of law.
+                      Supporting electoral processes and building capacity for
+                      effective governance across the Great Lakes Region.
+                    </p>
+                    <p class="author">
+                      <i class="fa-solid fa-calendar"></i>
+                      JAN 23, 2026 <span>/</span> BY
+                      <a href="#!"><strong>ICGLR</strong></a> <span>/</span>
+                      <a href="blogpost.html" data-placement="right" title="" data-original-title="Read more" class="corp-tooltip" data-bs-toggle="tooltip"><i class="fa-solid fa-plus-square"></i></a>
+                    </p>
+                  </article>
+                </div>
+
+                <!-- Program 3 -->
+                <div class="swiper-slide">
+                  <article class="blognews">
+                    <h4>
+                      <a href="blogpost.html">Economic Development and Regional Integration</a>
+                    </h4>
+                    <p>
+                      Facilitating trade, investment, and economic cooperation
+                      among member states. Promoting responsible resource
+                      management, including the Regional Certification Mechanism
+                      for conflict-free minerals, to drive sustainable economic
+                      growth.
+                    </p>
+                    <p class="author">
+                      <i class="fa-solid fa-calendar"></i>
+                      JAN 23, 2026 <span>/</span> BY
+                      <a href="#!"><strong>ICGLR</strong></a> <span>/</span>
+                      <a href="blogpost.html" data-placement="right" title="" data-original-title="Read more" class="corp-tooltip" data-bs-toggle="tooltip"><i class="fa-solid fa-plus-square"></i></a>
+                    </p>
+                  </article>
+                </div>
+
+                <!-- Program 4 -->
+                <div class="swiper-slide">
+                  <article class="blognews">
+                    <h4>
+                      <a href="blogpost.html">Humanitarian Social and Environment Issues</a>
+                    </h4>
+                    <p>
+                      Addressing refugee crises, internally displaced persons,
+                      and environmental conservation. Promoting sustainable
+                      resource management, climate change adaptation, and
+                      protection of natural ecosystems across the region.
+                    </p>
+                    <p class="author">
+                      <i class="fa-solid fa-calendar"></i>
+                      JAN 23, 2026 <span>/</span> BY
+                      <a href="#!"><strong>ICGLR</strong></a> <span>/</span>
+                      <a href="blogpost.html" data-placement="right" title="" data-original-title="Read more" class="corp-tooltip" data-bs-toggle="tooltip"><i class="fa-solid fa-plus-square"></i></a>
+                    </p>
+                  </article>
+                </div>
+
+                <!-- Program 5 -->
+                <div class="swiper-slide">
+                  <article class="blognews">
+                    <h4>
+                      <a href="blogpost.html">Cross Cutting Issues</a>
+                    </h4>
+                    <p>
+                      Tackling transnational challenges including illegal
+                      exploitation of natural resources, trafficking, organized
+                      crime, and regional security threats. Implementing
+                      coordinated responses and information sharing mechanisms
+                      among member states.
+                    </p>
+                    <p class="author">
+                      <i class="fa-solid fa-calendar"></i>
+                      JAN 23, 2026 <span>/</span> BY
+                      <a href="#!"><strong>ICGLR</strong></a> <span>/</span>
+                      <a href="blogpost.html" data-placement="right" title="" data-original-title="Read more" class="corp-tooltip" data-bs-toggle="tooltip"><i class="fa-solid fa-plus-square"></i></a>
+                    </p>
+                  </article>
+                </div>
+
+                <!-- Program 6 -->
+                <div class="swiper-slide">
+                  <article class="blognews">
+                    <h4>
+                      <a href="blogpost.html">Gender, Women and Children</a>
+                    </h4>
+                    <p>
+                      Protecting and empowering women and children through
+                      gender equality initiatives, combating sexual and
+                      gender-based violence, preventing child labor in mining,
+                      and promoting education and healthcare access for
+                      vulnerable populations.
+                    </p>
+                    <p class="author">
+                      <i class="fa-solid fa-calendar"></i>
+                      JAN 23, 2026 <span>/</span> BY
+                      <a href="#!"><strong>ICGLR</strong></a> <span>/</span>
+                      <a href="blogpost.html" data-placement="right" title="" data-original-title="Read more" class="corp-tooltip" data-bs-toggle="tooltip"><i class="fa-solid fa-plus-square"></i></a>
+                    </p>
+                  </article>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-pagination news-pagination"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /section News -->
+
+    <!-- MEMBER STATES -->
+    <section class="bg-gray">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="title">
+              <h2>Member States</h2>
+            </div>
+          </div>
+          <!-- DESCRIPTION -->
+          <div class="col-sm-12 col-lg-6">
+            <div class="blognews">
+              <a href="about.html" class="mb20">
+                <div class="item-img-wrap">
+                  <div class="item-img-overlay">
+                    <div class="about">
+                      <span class="btn btn-transparent-sm">
+                        <i class="fa-solid fa-plus"></i> Read more
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <p>
+              <strong>The International Conference on the Great Lakes Region
+                (ICGLR)</strong>
+              comprises 12 member states committed to regional cooperation and
+              responsible mineral trade. These nations work together to
+              implement the Regional Certification Mechanism, ensuring
+              conflict-free minerals and promoting ethical mining practices
+              throughout the Great Lakes Region. Through harmonized standards
+              and collaborative efforts, member states contribute to sustainable
+              development and regional stability.
+            </p>
+            <p>
+              Each member state maintains its own certification database that
+              synchronizes with the central ICGLR regional database, enabling
+              real-time tracking of mineral flows across borders. This
+              integrated approach ensures full traceability from mine site to
+              export, supporting
+              <a href="about.html">international due diligence requirements</a>
+              and promoting transparency in the mineral supply chain.
+            </p>
+
+            <div class="member-list">
+              <h4 class="color5">
+                <i class="fa-solid fa-globe-africa"></i> ICGLR Member States
+              </h4>
+              <ul>
+                <li>Angola</li>
+                <li>Burundi</li>
+                <li>Central African Republic</li>
+                <li>Republic of Congo</li>
+                <li>Democratic Republic of Congo</li>
+                <li>Kenya</li>
+                <li>Uganda</li>
+                <li>Rwanda</li>
+                <li>Republic of South Sudan</li>
+                <li>Sudan</li>
+                <li>Tanzania</li>
+                <li>Zambia</li>
+              </ul>
+            </div>
+          </div>
+          <!-- MAP -->
+          <div class="col-sm-12 col-lg-6">
+            <figure class="position-relative">
+              <div id="map">
+                <div class="legend">
+                  <div class="legend-title">Legend</div>
+                  <div class="legend-item">
+                    <div class="legend-color member-states"></div>
+                    <span class="legend-label">Member States</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-color co-opted-states"></div>
+                    <span class="legend-label">Co-opted States</span>
+                  </div>
+                </div>
+              </div>
+            </figure>
+            <script>
+            </script>
+            <div class="d-block d-lg-none pt5"></div>
+          </div>
+        </div>
+        <!-- /row -->
+      </div>
+      <!-- /container -->
+    </section>
+    <!-- /section Member States -->
+
+    <!-- BUY NOW -->
+    <section class="bg-buy parallax">
+      <div class="container-fluid">
+        <div class="row text-center">
+          <div class="col-md-12">
+            <h1 class="intro-text mt30" data-aos="fade-up">
+              Join the Movement for Responsible Mineral Trade
+            </h1>
+            <p class="lead mt30">
+              Be part of the regional framework ensuring conflict-free minerals
+              and ethical mining practices across the Great Lakes Region.
+            </p>
+            <p>
+              <a href="apply.html" class="btn btn-primary-corp-big mt-2">
+                <i class="fa-solid fa-certificate le"></i> Apply for
+                Certification
+              </a>
+              <a href="verify.html" class="btn btn-primary-corp-big btn-secondary mt-2">
+                <i class="fa-solid fa-search le"></i> Verify a Certificate
+              </a>
+            </p>
+          </div>
+        </div>
+        <!-- /row -->
+      </div>
+      <!-- /container-fluid -->
+    </section>
+    <!-- /section Buy Now with Parallax -->
+
+    <!-- CLIENTS -->
+    <section class="bg-white">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="title">
+              <h2>Our Members</h2>
+            </div>
+          </div>
+          <style>
+            .flag-item {
+              text-align: center;
+              transition: transform 0.3s ease;
+              padding: 0 auto;
+              border-radius: 8px;
+              height: 50%;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: space-between;
+            }
+
+            .flag-item:hover {
+              transform: translateY(-5px);
+              box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            }
+
+            .flag-item a {
+              display: block;
+              text-decoration: none;
+              margin-bottom: 15px;
+              width: 100%;
+            }
+
+            .flag-item img {
+              width: 100%;
+              max-width: 200px;
+              height: 100px;
+              object-fit: cover;
+              border: 2px solid #ddd;
+              border-radius: 4px;
+              transition: all 0.3s ease;
+              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .flag-item:hover img {
+              border-color: #044a67;
+              transform: scale(1.05);
+            }
+
+            .flag-item p {
+              color: #333;
+              font-size: 0.95rem;
+              font-weight: 600;
+              margin: 0;
+              line-height: 1.4;
+              min-height: 45px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+
+            .lazy {
+              opacity: 0;
+              transition: opacity 0.3s;
+            }
+
+            .lazy.loaded {
+              opacity: 1;
+            }
+
+            @media (max-width: 768px) {
+              .flag-item {
+                padding: 15px;
+              }
+
+              .flag-item p {
+                font-size: 0.85rem;
+              }
+
+              .swiper-button-prev,
+              .swiper-button-next {
+                width: 35px;
+                height: 35px;
+              }
+
+              .swiper-button-prev:after,
+              .swiper-button-next:after {
+                font-size: 16px;
+              }
+            }
+
+            @media (max-width: 480px) {
+              .swiper-slider {
+                padding: 20px 40px;
+              }
+
+              .flag-item p {
+                font-size: 0.8rem;
+                min-height: 40px;
+              }
+            }
+          </style>
+          <div class="members-section"></div>
+          <div class="col-md-12">
+            <div class="swiper-slider" id="clients">
+              <div class="swiper swiper-container">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                    <div class="flag-item">
+                      <a href="https://www.sh.gov.zm/" target="_blank">
+                        <img class="lazy entered loaded" decoding="async" src="/images/Flag_of_Zambia.svg" data-src="/images/Flag_of_Zambia.svg" alt="Zambia" data-ll-status="loaded">
+                      </a>
+                      <p>The Republic of Zambia</p>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="flag-item">
+                      <a href="https://ikulu.go.tz/" target="_blank">
+                        <img class="lazy entered loaded" decoding="async" src="/images/Flag_of_Tanzania.svg" data-src="/images/Flag_of_Tanzania.svg" alt="Tanzania" data-ll-status="loaded">
+                      </a>
+                      <p>The United Republic of Tanzania</p>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="flag-item">
+                      <a href="https://presidency.gov.sd/" target="_blank">
+                        <img class="lazy entered loaded" decoding="async" src="/images/Flag_of_Sudan.svg" data-src="/images/Flag_of_Sudan.svg" alt="Sudan" data-ll-status="loaded">
+                      </a>
+                      <p>The Republic of Sudan</p>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="flag-item">
+                      <a href="https://goss.org/" target="_blank">
+                        <img class="lazy entered loaded" decoding="async" src="/images/Flag_of_South_Sudan.svg" data-src="/images/Flag_of_South_Sudan.svg" alt="South Sudan" data-ll-status="loaded">
+                      </a>
+                      <p>The Republic South Sudan</p>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="flag-item">
+                      <a href="https://www.gov.rw/" target="_blank">
+                        <img class="lazy entered loaded" decoding="async" src="/images/Flag_of_Rwanda.svg" data-src="/images/Flag_of_Rwanda.svg" alt="Rwanda" data-ll-status="loaded">
+                      </a>
+                      <p>The Republic Rwanda</p>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="flag-item">
+                      <a href="https://www.president.go.ke/" target="_blank">
+                        <img class="lazy entered loaded" decoding="async" src="/images/Flag_of_Kenya.svg" data-src="/images/Flag_of_Kenya.svg" alt="Kenya" data-ll-status="loaded">
+                      </a>
+                      <p>The Republic of Kenya</p>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="flag-item">
+                      <a href="https://www.presidence.cd/" target="_blank">
+                        <img class="lazy entered loaded" decoding="async" src="/images/Flag_of_the_Democratic_Republic_of_the_Congo.svg" data-src="/images/Flag_of_the_Democratic_Republic_of_the_Congo.svg" alt="Democratic Republic of Congo" data-ll-status="loaded">
+                      </a>
+                      <p>Democratic<br>Republic of the<br>Congo</p>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="flag-item">
+                      <a href="https://www.gouv.cf/" target="_blank">
+                        <img class="lazy entered loaded" decoding="async" src="/images/Flag_of_the_Central_African_Republic.svg" data-src="/images/Flag_of_the_Central_African_Republic.svg" alt="CAR" data-ll-status="loaded">
+                      </a>
+                      <p>Central African Republic</p>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="flag-item">
+                      <a href="https://presidence.cg/" target="_blank">
+                        <img class="lazy entered loaded" decoding="async" src="/images/Flag_of_the_Republic_of_the_Congo.svg" data-src="/images/Flag_of_the_Republic_of_the_Congo.svg" alt="Republic of Congo" data-ll-status="loaded">
+                      </a>
+                      <p>Republic of the<br>Congo</p>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="flag-item">
+                      <a href="https://www.presidence.bi/" target="_blank">
+                        <img class="lazy entered loaded" decoding="async" src="/images/Flag_of_Burundi.svg" data-src="/images/Flag_of_Burundi.svg" alt="Burundi" data-ll-status="loaded">
+                      </a>
+                      <p>The Republic of Burundi</p>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="flag-item">
+                      <a href="https://governo.gov.ao/" target="_blank">
+                        <img class="lazy entered loaded" decoding="async" src="/images/Flag_of_Angola.svg" data-src="/images/Flag_of_Angola.svg" alt="Angola" data-ll-status="loaded">
+                      </a>
+                      <p>The Republic of Angola</p>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="flag-item">
+                      <a href="https://www.statehouse.go.ug/" target="_blank">
+                        <img class="lazy entered loaded" decoding="async" src="/images/Flag_of_Uganda.svg" data-src="/images/Flag_of_Uganda.svg" alt="Uganda" data-ll-status="loaded">
+                      </a>
+                      <p>The Republic of Uganda</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="button" aria-label="Previous" class="swiper-button-prev"></button>
+              <button type="button" aria-label="Next" class="swiper-button-next"></button>
+            </div>
+          </div>
+        </div>
+        <!-- /row -->
+      </div>
+      <!-- /container -->
+    </section>
+    <!-- /section Clients -->
+
+    <!-- FOOTER
+        ===============================================================-->
+    <footer>
+      <div class="footer-top">
+        <div class="container">
+          <div class="row">
+            <div class="footer-widget col-sm-12 col-md-12 col-lg-4 first">
+              <h3>About us</h3>
+              <p>
+                <a href="about.html">ICGLR</a> stands for the
+                International Conference on the Great Lakes Region. It's a
+                highly regarded inter-governmental organization that focuses on
+                promoting responsible mineral trade and implementing
+                comprehensive certification standards across member states in
+                the African Great Lakes Region.
+              </p>
+              <ul class="list-unstyled">
+                <li>
+                  <div>
+                    <strong style="color: #fff; display: block; margin-bottom: 5px">Certificates Inquiry</strong>
+                    <a href="/cdn-cgi/l/email-protection#046d6a626b446d67636876676176706d626d6765706d6b6a2a6b7663"><span class="__cf_email__" data-cfemail="0b62656d644b62686c6779686e797f626d62686a7f6264652564796c">[email&nbsp;protected]</span></a>
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <strong style="color: #fff; display: block; margin-bottom: 5px">Technical Support</strong>
+                    <a href="/cdn-cgi/l/email-protection#285b5d5858475a5c68414b4f445a4b4d5a5c414e414b495c41474606475a4f"><span class="__cf_email__" data-cfemail="02717772726d7076426b61656e70616770766b646b6163766b6d6c2c6d7065">[email&nbsp;protected]</span></a>
+                  </div>
+                </li>
+              </ul>
+              <div class="d-block d-lg-none pt20"></div>
+            </div>
+            <div class="footer-widget col-sm-6 col-md-6 col-lg-4">
+              <h3>Useful Links</h3>
+              <ul class="useful-links">
+                <li>
+                  <a href="verify.html">Verify Certificate</a>
+                </li>
+                <li>
+                  <a href="assessment.html">Assessment</a>
+                </li>
+                <li>
+                  <a href="apply.html">Apply for Certification</a>
+                </li>
+                <li>
+                  <a href="compliance.html">Compliance Standards</a>
+                </li>
+                <li>
+                  <a href="contact.html">Contact Us</a>
+                </li>
+                <li>
+                  <a href="/features">Features</a>
+                </li>
+                
+              </ul>
+              <div class="d-block d-lg-none pt20"></div>
+            </div>
+            <div class="footer-widget col-sm-6 col-md-6 col-lg-4">
+              <h3>Newsletter Registration</h3>
+              <p>
+                Subscribe today to receive the latest
+                <strong>ICGLR</strong> news, certification updates, and mineral
+                trade insights via email. You may unsubscribe from this service
+                at any time.
+              </p>
+              <!-- Newsletter Form-->
+              <form method="post" onsubmit="return handleSubscribe(event);">
+                <div class="input-group newsletter">
+                  <label class="sr-only" for="subscribe-email">Enter your email...</label>
+                  <input type="email" class="form-control" id="subscribe-email" placeholder="Enter your email..." required="">
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn">
+                      <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                  </span>
+                </div>
+              </form>
+              <p class="newsletter-desc">
+                <strong>No spam guaranteed:</strong> We respect your privacy and
+                will only send you relevant updates about ICGLR certification
+                programs and regional initiatives.
+              </p>
+            </div>
+
+            <!-- Success Modal -->
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6 credits">
+              <p>
+                © ICGLR <span id="currentYear">2026</span>. All Rights Reserved.
+              </p>
+            </div>
+
+            <script data-cfasync="false" src="/js/email-decode.min.js"></script><script>
+              // Automatically update the year
+              document.getElementById("currentYear").textContent =
+                new Date().getFullYear();
+            </script>
+          </div>
+        </div>
+      </div>
+      <!--WhatsApp Button-->
+      <a href="#" class="whatsappButton" id="whatsappButton"><i class="fa-brands fa-whatsapp"></i></a>
+      <!--back to top-->
+      <a href="#" class="scrollToTop" id="scrollToTop"><i class="fa-solid fa-angle-up"></i></a>
+    </footer>
+
+    <!-- JAVASCRIPT
+        ===============================================================-->
+
+        <script src="/js/mdata.js"></script>
+    <script src="/js/worldmap.js"></script>
+    <!-- Bootstrap pooper-->
+    <script src="/js/popper.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/js/bootstrap.min.js"></script>
+    <!-- Glightbox -->
+    <script src="/js/glightbox.min.js"></script>
+    <!-- Swiper -->
+    <script src="/js/swiper-bundle.min.js"></script>
+    <!-- Animation -->
+    <script src="/js/aos.js"></script>
+    <!-- Main -->
+    <script src="/js/main.js"></script>
+    <!-- Change Color Theme JS -->
+    <script src="/js/style-switcher.js"></script>
+  
+
+  
+
+</body></html>
