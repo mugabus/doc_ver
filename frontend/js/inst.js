@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
  * Creates and adds the popup HTML to the document body
  */
 function createApplyPopup() {
-  const domain = window.DOMAIN || "icglrcertification.org";
   // Create popup HTML structure
   const popupHTML = `
       <div id="applyPopup" class="popup-overlay" style="display: none;">
@@ -31,7 +30,7 @@ function createApplyPopup() {
           </div>
           <div class="popup-content">
             <h4>Instructions</h4>
-            <p>In order to apply, please email the following details to <strong><a href="mailto:certification@${domain}">certification@${domain}</a></strong>:</p>
+            <p>In order to apply, please email the following details to <strong><a href="mailto:info@ceec-icglr-cirgl.org">info@ceec-icglr-cirgl.org</a></strong>:</p>
             
             <h5>Exporter Information</h5>
             <ul style='list-style-type: circle;'>

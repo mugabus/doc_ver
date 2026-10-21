@@ -20,12 +20,12 @@ export function Login({ onLogin }: LoginProps) {
     // Simulate authentication (replace with actual Supabase auth)
     setTimeout(() => {
       // Demo credentials
-      if (email === 'admin@cirgl.org' && password === 'admin123') {
+      if (email === 'info@ceec-icglr-cirgl.org' && password === 'admin123') {
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('userEmail', email);
         onLogin();
       } else {
-        setError('Invalid email or password. Use admin@cirgl.org / admin123');
+        setError('Invalid email or password. Use info@ceec-icglr-cirgl.org / admin123');
       }
       setLoading(false);
     }, 1000);
@@ -82,7 +82,7 @@ export function Login({ onLogin }: LoginProps) {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition"
-                  placeholder="admin@cirgl.org"
+                  placeholder="info@ceec-icglr-cirgl.org"
                 />
               </div>
             </div>
@@ -146,7 +146,7 @@ export function Login({ onLogin }: LoginProps) {
 <div className="mt-6 pt-6 border-t border-gray-200">
 <p className="text-center text-gray-500 text-sm">
               Demo credentials: <br />
-<span className="font-mono text-gray-700">admin@cirgl.org</span> / <span className="font-mono text-gray-700">admin123</span>
+<span className="font-mono text-gray-700">info@ceec-icglr-cirgl.org</span> / <span className="font-mono text-gray-700">admin123</span>
             </p>
           </div>
         </div>
