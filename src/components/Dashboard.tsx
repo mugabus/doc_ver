@@ -741,6 +741,13 @@ export function Dashboard({ onLogout }: DashboardProps) {
                               >
                                 <Download className="w-4 h-4 text-gray-600" />
                               </button>
+                              <button
+                                onClick={() => handleDeleteCertificate(cert.id)}
+                                className="p-2 hover:bg-red-100 rounded-lg transition"
+                                title="Delete Certificate"
+                              >
+                                <Trash2 className="w-4 h-4 text-red-600" />
+                              </button>
                             </div>
                           </td>
                         </tr>
